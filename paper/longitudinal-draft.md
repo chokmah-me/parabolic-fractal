@@ -1,9 +1,12 @@
+<p class="hebrew-epigraph" dir="rtl" lang="he">אִם יִרְצֶה הַשֵּׁם</p>
+
 # Topological Atrophy Under Agentic Coding: Longitudinal Evidence for Constructal Hierarchy Resilience in AI-Assisted Software Repositories
 
-**[PREPRINT DRAFT]**
+by **Daniyel Yaacov Bilar**, Chokmah LLC, chokmah-dyb@pm.me <p class="hebrew-date" dir="rtl" lang="he">ג׳ סִיוָן תשפ״ו</p>
 
-Companion paper to: "Fan-In Distributions in Human-Written vs AI-Generated Python
-Codebases: A Constructal Law Analysis" (cross-sectional preprint)
+ORCID: [0000-0002-9040-6914](https://orcid.org/0000-0002-9040-6914)
+
+**[PREPRINT DRAFT]** · Companion paper to Bilar (2026a): "Fan-In Distributions in Human-Written vs AI-Generated Python Codebases: A Constructal Law Analysis"
 
 ---
 
