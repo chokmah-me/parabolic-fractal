@@ -317,7 +317,7 @@ data may not be long enough to see it.
 - Bejan, A. & Lorente, S. (2011). The constructal law and the evolution of design in nature. *Physics of Life Reviews*.
 - Hassan, A.E. & Holt, R.C. (2004). Predicting change propagation in software systems. *ICSM 2004*.
 - Killick, R., Fearnhead, P., & Eckley, I.A. (2012). Optimal detection of changepoints with a linear computational cost. *JASA*, 107(500), 1590–1598.
-- Maillart, T. & Sornette, D. (2008). Heavy-tailed distributions of software structure. *arXiv:0805.3397*.
+- Maillart, T. & Sornette, D. (2008). Empirical tests of Zipf's law mechanism in open source Linux distribution. *Physical Review Letters*, 101, 218701. https://doi.org/10.1103/PhysRevLett.101.218701
 - Mao, T., Zhao, D., Tang, H., Wang, X., & Zhang, H. (2026). A large-scale empirical study of AI-generated code in real-world repositories. *arXiv:2603.27130*.
 - Paipuru, T. (2026). CodeCompass: Navigating the Navigation Paradox in Agentic Code Intelligence. *arXiv:2602.20048*.
 - Vuong, Q.H. (1989). Likelihood ratio tests for model selection and non-nested hypotheses. *Econometrica*, 57(2), 307–333.
