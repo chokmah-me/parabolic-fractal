@@ -128,9 +128,11 @@ cognitive attention. A developer who feels the resistance of navigating an
 overloaded, highly coupled module will refactor it — splitting the bottleneck,
 building intermediate abstraction layers, and bending the fan-in distribution away
 from a pure power-law into a downward-opening parabola in log-log space. That
-parabola is the signature of a log-normal distribution. Maillart and Sornette (2008)
-confirmed this empirically for software package size distributions; we extend the
-test to intra-repo file-level fan-in and to a new comparison class: AI-generated code.
+parabola is the signature of a log-normal distribution. Clauset, Shalizi, and Newman
+(2009) showed that capacity limits cause real finite-network distributions to decay
+faster than any pure power-law, making log-normal the better empirical fit; we extend
+that test to intra-repo file-level fan-in and to a new comparison class: AI-generated
+code.
 
 AI code generators remove this optimization pressure. A developer who feels the
 cognitive resistance of an overloaded module will refactor it — an intrinsic feedback
@@ -156,11 +158,14 @@ log-normal in finite data, and provided rigorous testing methods. Their key find
 cognitive and physical capacity limits cause real-world distributions to decay faster
 than any pure power-law, making log-normal a better fit.
 
-**Software dependency metrics.** Maillart and Sornette (2008) showed that software
-package size distributions follow log-normal rather than power-law, attributing the
-deviation to multiplicative growth under finite cognitive constraints. Package ecosystem
-studies report Gini ≈ 0.88 for dependency fan-in in PyPI and CRAN, and 0.84 in
-Bioconductor [cite: source for these benchmark figures needed].
+**Software dependency metrics.** Maillart and Sornette (2008) showed that Linux
+open-source package size distributions follow Zipf's power law, with Gibrat's
+proportional growth as the generating mechanism. In finite networks with bounded
+growth, proportional growth produces log-normal rather than power-law tails (Clauset
+et al. 2009); the Constructal prediction is that cognitive refactoring pressure
+imposes exactly this finite-size bound. Package ecosystem studies report Gini ≈ 0.88
+for dependency fan-in in PyPI and CRAN, and 0.84 in Bioconductor [cite: source for
+these benchmark figures needed].
 
 **Constructal law in flow systems.** Hess and Murray showed that minimizing both
 construction cost and flow resistance in branching networks yields the cubic law

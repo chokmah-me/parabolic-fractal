@@ -71,8 +71,10 @@ signal strength within individual Python repositories?
 
 **Constructal law and software topology.** Bejan & Lorente (2011) formalize the
 constructal law: flow systems that persist are those whose geometry minimizes
-resistance. Maillart & Sornette (2008) show that software package ecosystems follow
-log-normal size distributions, consistent with constructal-tree predictions. The
+resistance. Maillart & Sornette (2008) show that Linux open-source package size distributions
+follow Zipf's power law via Gibrat's proportional growth; in finite bounded networks
+this mechanism produces log-normal tails (Clauset et al. 2009), consistent with
+constructal-tree predictions. The
 companion paper (Bilar 2026a) extends this to intra-repo import topology,
 finding that mature human-written Python repos fit log-normal fan-in while
 AI-generated repos trend toward the flatter power-law end.
