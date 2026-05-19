@@ -155,9 +155,13 @@ functional applications built by AI agents, not AI tooling frameworks.
 
 ## Citation
 
-Preprint forthcoming. In the meantime:
-
 ```
-Bilar, D.Y. (2026). Fan-In Distributions in Human-Written vs AI-Generated Python
-Codebases: A Constructal Law Analysis. [preprint]
+Bilar, Daniyel Yaacov (2026a). Fan-In Distributions in Human-Written vs AI-Generated
+Python Codebases: A Constructal Law Analysis. Chokmah LLC. [preprint]
+https://github.com/chokmah-me/parabolic-fractal
+
+Bilar, Daniyel Yaacov (2026b). Topological Atrophy Under Agentic Coding: Longitudinal
+Evidence for Constructal Hierarchy Resilience in AI-Assisted Software Repositories.
+Chokmah LLC. [preprint]
+https://github.com/chokmah-me/parabolic-fractal
 ```
