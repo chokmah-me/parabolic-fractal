@@ -1,4 +1,10 @@
+<p class="hebrew-epigraph" dir="rtl" lang="he">אִם יִרְצֶה הַשֵּׁם</p>
+
 # Fan-In Distributions in Human-Written vs AI-Generated Python Codebases: A Constructal Law Analysis
+
+by **Daniyel Yaacov Bilar**, Chokmah LLC, chokmah-dyb@pm.me <p class="hebrew-date" dir="rtl" lang="he">ג׳ סִיוָן תשפ״ו</p>
+
+ORCID: [0000-0002-9040-6914](https://orcid.org/0000-0002-9040-6914)
 
 ---
 
