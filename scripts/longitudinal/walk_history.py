@@ -31,10 +31,14 @@ def _git(repo: Path, *args) -> str:
     return result.stdout.strip()
 
 
-def _commit_before(repo: Path, target_date: date) -> str | None:
-    """Return the last commit hash before (or on) target_date, or None."""
+def _commit_before(repo: Path, target_date: date, tip: str = "HEAD") -> str | None:
+    """Return the last commit hash before (or on) target_date, or None.
+
+    tip must be a stable ref (branch name or full SHA) — not HEAD if the repo
+    may be in detached-HEAD state during iteration.
+    """
     out = _git(repo, "rev-list", "-n", "1",
-               f"--before={target_date.isoformat()}T23:59:59", "HEAD")
+               f"--before={target_date.isoformat()}T23:59:59", tip)
     return out if out else None
 
 
@@ -72,10 +76,12 @@ def walk(repo: Path, adoption_date: date, out_dir: Path,
     snapshots = _month_range(pre_start, post_end)
     print(f"  {len(snapshots)} snapshots from {pre_start} to {post_end}")
 
-    # Save current HEAD so we can restore it
+    # Save current HEAD so we can restore it, and capture the tip SHA to use
+    # as a stable starting point for rev-list (HEAD changes on git checkout --detach)
     original_branch = _git(repo, "symbolic-ref", "--short", "HEAD")
     if not original_branch:
         original_branch = _git(repo, "rev-parse", "HEAD")
+    tip_sha = _git(repo, "rev-parse", "HEAD")
 
     try:
         for snap_date in snapshots:
@@ -84,7 +90,7 @@ def walk(repo: Path, adoption_date: date, out_dir: Path,
                 print(f"    skip (cached): {snap_date}")
                 continue
 
-            commit = _commit_before(repo, snap_date)
+            commit = _commit_before(repo, snap_date, tip=tip_sha)
             if commit is None:
                 print(f"    no commit before {snap_date}, skipping")
                 continue
