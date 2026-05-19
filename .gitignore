@@ -1,0 +1,16 @@
+# Cloned repos — re-cloneable via collect_repos.py
+data/repos/
+
+# Longitudinal full clones and snapshot data
+data/longitudinal/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
