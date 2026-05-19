@@ -52,6 +52,15 @@ AGENTIC_REPOS = [
     "https://github.com/dj-bolt/django-bolt",            # CLAUDE.md, Rust/Python Django framework
     "https://github.com/triepod-ai/claude-cli-rest-api", # CLAUDE.md, FastAPI MCP wrapper
     "https://github.com/MinBZK/poc-machine-law",         # CLAUDE.md, uv, Python simulation backend
+    # Wave 2 additions (2025/2026, FastAPI-heavy, explicit AI authorship)
+    "https://github.com/akenel/borrowhood",                    # "Built with: Claude Code", FastAPI/uvicorn
+    "https://github.com/Shrivaujjawal321/J.A.R.V.I.S",        # "Built with Claude Code subagents", FastAPI+Pydantic v2
+    "https://github.com/elsheraey/marsa-planner",              # "Vibe-coded proof of concept", FastAPI
+    "https://github.com/damienlaine/agentic-sprint",           # "Built with Claude Code", FastAPI, multi-agent
+    "https://github.com/ItamarZand88/CLI-Anything-WEB",        # "Built with Claude Code", Python CLI generation
+    "https://github.com/gaotiexinqu/OneResearchClaw",          # "Built with Cursor", Python autonomous research
+    "https://github.com/danyQe/codebase-mcp",                  # "Built with Claude", FastAPI MCP server
+    "https://github.com/NaimalArain13/Hackathon-II_The-Evolution-of-Todo",  # "Built with Claude Code", FastAPI
 ]
 
 BASE_DIR = Path(__file__).parent.parent / "data" / "repos"

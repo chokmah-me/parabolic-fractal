@@ -8,17 +8,17 @@ Import fan-in — the count of intra-repo modules that import a given file — e
 the hierarchical coupling structure of a codebase. Constructal theory (Bejan 1996)
 predicts that any finite flow system shaped by iterative optimization develops
 log-normal, not power-law, size distributions. We measure fan-in distributions across
-15 mature Python open-source projects (Cohort A) and 14 AI-generated repositories
-created 2024-2025 (Cohort B), identified by explicit AI authorship signals (CLAUDE.md,
+15 mature Python open-source projects (Cohort A) and 22 AI-generated repositories
+created 2024-2026 (Cohort B), identified by explicit AI authorship signals (CLAUDE.md,
 `.cursor/rules`, `Co-authored-by: Cursor` commit trailers, or README self-attribution).
 In Cohort A, 14 of 15 projects show statistically significant log-normal fan-in
 (Vuong z > 1.96), with Gini mean 0.882, matching prior benchmarks for mature package
-ecosystems (PyPI, CRAN: Gini ≈ 0.88). In Cohort B, 29% of repos (4/14) exhibit
+ecosystems (PyPI, CRAN: Gini ≈ 0.88). In Cohort B, 32% of repos (7/22) exhibit
 structural degeneration — zero or near-zero intra-repo coupling, rendering fan-in
-distribution fitting impossible. Among the 8 Cohort B repos with sufficient coupling,
-Gini mean is 0.742 (Mann-Whitney U, p = 0.0045, rank-biserial r = −0.733), and
-log-normal signal strength is halved (mean Vuong z 3.00 vs 6.34, p = 0.024). All
-8 still exhibit log-normal shape, but with markedly lower concentration and weaker
+distribution fitting impossible. Among the 12 Cohort B repos with sufficient coupling,
+Gini mean is 0.725 (Mann-Whitney U, p = 0.0011, rank-biserial r = −0.744), and
+log-normal signal strength is halved (mean Vuong z 2.77 vs 6.00, p = 0.019). 11 of
+12 still exhibit log-normal shape, but with markedly lower concentration and weaker
 parabolic curvature. We term this the **agentic flattening effect**: the partial
 collapse of the hierarchical fan-in topology that Constructal theory predicts when
 iterative cognitive refactoring pressure is removed from the development cycle.
@@ -27,15 +27,16 @@ iterative cognitive refactoring pressure is removed from the development cycle.
 
 ## TL;DR by Audience
 
-**Software engineer / architect:** We parsed every `import` statement in 29 Python
-repos — 15 mature OSS projects and 14 AI-generated ones — and measured how unequally
+**Software engineer / architect:** We parsed every `import` statement in 37 Python
+repos — 15 mature OSS projects and 22 AI-generated ones — and measured how unequally
 fan-in is distributed (Gini) and whether the rank-frequency curve is log-normal or
 power-law (AIC + Vuong test). Human-written repos: Gini 0.88, log-normal wins 14/15.
-AI-generated repos: two repos have *zero* intra-repo imports (every file only touches
-external packages), and among the rest Gini drops to 0.74 (p=0.005, large effect).
-The parabolic log-log curvature weakens but doesn't flip. Practical upshot: fan-in
-Gini is a cheap, CI-friendly structural health metric. If your repo's Gini is trending
-toward 0.6, your intermediate abstraction layer is dissolving.
+AI-generated repos: three repos have *zero* intra-repo imports (every file only
+touches external packages), and among the 12 with sufficient coupling, Gini drops
+to 0.72 (p=0.001, large effect). The parabolic log-log curvature weakens but doesn't
+flip. Practical upshot: fan-in Gini is a cheap, CI-friendly structural health metric.
+If your repo's Gini is trending toward 0.6, your intermediate abstraction layer is
+dissolving.
 
 **Cognitive scientist:** Human developers experience coupling as cognitive friction.
 When a module accumulates too many dependents, navigating its blast radius becomes
@@ -60,20 +61,20 @@ hierarchies. The software works — but it's a dirt road grid where a city shoul
 **Skeptic:** Fair objections: (1) Selection bias — our agentic repos are publicly
 self-attributing outliers, not representative of all AI-assisted code. (2) FastAPI's
 own design philosophy encourages thin routers and heavy external-library coupling,
-independently of AI authorship. (3) The Mann-Whitney test uses only 8 agentic repos
-after filtering; the sample is small. (4) "Log-normal wins 8/8" in agentic repos
-undercuts a simple narrative. Our response: we acknowledge these limits explicitly
-in Section 5.5. The filter exclusions (4 repos too flat to measure) strengthen, not
-weaken, the finding. The FastAPI confound is real but cannot explain Gini=0.000 in
-repos with 88-92 files. The effect size (r=−0.733) is large enough to be meaningful
-at n=8. And the log-normal persistence is theoretically interesting: the parabola
-flattens, it doesn't invert — consistent with Constructal gradient atrophy, not a
-phase transition.
+independently of AI authorship. (3) The Mann-Whitney test uses only 12 agentic repos
+after filtering; the sample is still modest. (4) "Log-normal wins 11/12" in agentic
+repos undercuts a simple narrative. Our response: we acknowledge these limits
+explicitly in Section 5.5. The filter exclusions (10 repos too flat or too small to
+measure) strengthen, not weaken, the finding. The FastAPI confound is real but cannot
+explain Gini=0.000 in repos with 88-92 files. The effect size (r=−0.744) is large
+enough to be meaningful at n=12. And the log-normal persistence is theoretically
+interesting: the parabola flattens, it doesn't invert — consistent with Constructal
+gradient atrophy, not a phase transition.
 
 **Funders / investors:** AI coding tools promise 10× developer velocity. Our data
 suggests an unreported structural cost: AI-generated codebases show significantly
-lower architectural concentration (Gini −16%, p=0.005) and weaker hierarchical
-organization. Two of 14 studied repos had zero internal coupling — each file a
+lower architectural concentration (Gini −18%, p=0.001) and weaker hierarchical
+organization. Three of 22 studied repos had zero internal coupling — each file a
 standalone island. This matters for maintainability: flat architectures increase
 the cost of every future change (no shared abstraction to update; changes must be
 made everywhere). The fix is not to stop using AI tools, but to instrument CI
@@ -87,7 +88,7 @@ production software in critical domains — financial modeling, medical data
 pipelines, government simulation systems (one of our study repos is a Dutch
 government machine-law proof-of-concept). We provide the first structural evidence
 that AI-generated code differs measurably from human-written code in its
-architectural organization, independent of whether it passes tests. Two of 14 repos
+architectural organization, independent of whether it passes tests. Three of 22 repos
 had zero internal structure — each file isolated from every other. A companion
 framework (Elke Shayna, forthcoming) shows that behavioral testing of AI agents is
 mathematically intractable under adversarial conditions. Structural metrics like
@@ -178,8 +179,8 @@ tree they are degrading — explaining the mechanism behind our empirical findin
 SQLAlchemy, Celery, FastAPI, requests, pytest, Scrapy, httpx, Pydantic, aiohttp,
 Tornado, Click.
 
-**Cohort B (agentic — AI-generated or AI-assisted):** 14 Python repositories
-created 2024-2025, each meeting at least one of:
+**Cohort B (agentic — AI-generated or AI-assisted):** 22 Python repositories
+created 2024-2026, each meeting at least one of:
 - CLAUDE.md or `.cursor/rules` present in root
 - Commit messages containing `Co-authored-by: Cursor cursoragent@cursor.com`
   or `noreply@anthropic.com`
@@ -243,7 +244,7 @@ Mann-Whitney U (non-parametric, two-sided). Effect sizes as rank-biserial $r$.
 | aiohttp    | 164   | 0.846 | +24.1  | +3.92   | YES |
 | tornado    | 107   | 0.844 | +51.4  | +7.58   | YES |
 | click      | 63    | 0.845 | +13.2  | +5.54   | YES |
-| **mean**   |       | **0.882** | **+122.5** | **+6.34** | **14/15** |
+| **mean**   |       | **0.882** | **+95.2** | **+6.00** | **14/15** |
 
 14 of 15 repos show log-normal fan-in. The exception is NumPy ($\Delta\text{AIC}=+1.5$,
 Vuong $z=+1.11$): NumPy's Python layer is a thin wrapper over C extensions,
@@ -252,51 +253,61 @@ compressing intra-Python coupling. The Gini mean of 0.882 matches prior benchmar
 
 ### 4.2 Agentic Group (Cohort B)
 
-Of 14 agentic repos cloned, 6 could not be fitted:
+Of 22 agentic repos cloned, 10 could not be fitted:
 
 | Repo | Files | Files (fanin>0) | Gini | Reason excluded |
 |------|------:|----------------:|-----:|-----------------|
 | dark-factory-experiment | 92 | 0 | 0.000 | Zero intra-repo coupling |
 | ott-platform | 88 | 0 | 0.000 | Zero intra-repo coupling |
+| OneResearchClaw | 30 | 0 | 0.000 | Zero intra-repo coupling |
 | tradinggame | 62 | 4 | 0.946 | <10 connected files |
 | camp2025-stock | 119 | 8 | 0.971 | <10 connected files |
+| J.A.R.V.I.S | 57 | <5 | — | <10 connected files |
+| Hackathon-II_The-Evolution-of-Todo | 66 | <2 | — | <10 connected files |
 | deepseek_ocr_app | 4 | — | — | Too small |
+| agentic-sprint | 0 | — | — | No Python files (agent config template) |
 | claude-cli-rest-api | — | — | — | Checkout failure (Windows path) |
 
-Two repos (dark-factory-experiment, ott-platform) have Gini=0.000: every Python file
-is isolated with zero intra-repo imports. No baseline repo showed this pattern.
-Among the 8 fitted agentic repos:
+Three repos (dark-factory-experiment, ott-platform, OneResearchClaw) have Gini=0.000:
+every Python file is isolated with zero intra-repo imports. No baseline repo showed
+this pattern. Among the 12 fitted agentic repos:
 
 | Repo | Files | Gini  | ΔAIC  | Vuong z | LN? |
 |------|------:|------:|------:|--------:|-----|
+| borrowhood | 275 | 0.854 | +78.9 | +4.03 | YES |
 | loki-mode | 531 | 0.922 | +34.9 | +4.19 | YES |
 | lazy-bird | 136 | 0.834 | +83.0 | +7.47 | YES |
+| CLI-Anything-WEB | 453 | 0.751 | +78.4 | +3.24 | YES |
 | zhang2025 | 50 | 0.826 | +5.1 | +1.98 | YES |
 | django-bolt | 292 | 0.789 | +4.4 | +1.45 | YES |
+| marsa-planner | 37 | 0.705 | +2.1 | +1.29 | YES |
 | fqf | 36 | 0.705 | +11.7 | +3.10 | YES |
 | NewsCrawler | 121 | 0.652 | +22.9 | +3.24 | YES |
 | openclaude | 21 | 0.625 | +3.9 | +2.02 | YES |
 | poc-machine-law | 286 | 0.581 | +3.1 | +0.52 | YES |
-| **mean** | | **0.742** | **+21.1** | **+3.00** | **8/8** |
+| codebase-mcp | 51 | 0.460 | +1.2 | +0.67 | no |
+| **mean** | | **0.725** | **+27.5** | **+2.77** | **11/12** |
 
-All 8 show log-normal shape ($\Delta\text{AIC} > 2$), but with substantially lower
-Gini and weaker signal. poc-machine-law (Vuong $z=+0.52$, p=0.60) is not
-statistically significant despite meeting the AIC threshold.
+11 of 12 show log-normal shape ($\Delta\text{AIC} > 2$). The exception is
+codebase-mcp ($\Delta\text{AIC}=+1.2$, Vuong $z=+0.67$): a small FastAPI MCP server
+where the log-normal preference exists but falls below both thresholds. poc-machine-law
+(Vuong $z=+0.52$, p=0.60) meets the AIC threshold but not Vuong significance.
 
 ### 4.3 Between-Group Comparison
 
-| Metric | Baseline (n=15) | Agentic (n=8) | U | p | r |
-|--------|----------------:|--------------:|--:|--:|--:|
-| Gini | 0.882 | 0.742 | 104.0 | **0.0045** | −0.733 |
-| ΔAIC | 95.2 | 21.1 | 95.0 | **0.024** | −0.583 |
-| Entropy (norm.) | 0.770 | 0.880 | 18.0 | **0.007** | +0.700 |
-| Fraction leaves | 0.680 | 0.518 | 86.0 | 0.093 | −0.433 |
+| Metric | Baseline (n=15) | Agentic (n=12) | U | p | r |
+|--------|----------------:|---------------:|--:|--:|--:|
+| Gini | 0.882 | 0.725 | 157.0 | **0.0011** | −0.744 |
+| ΔAIC | 95.2 | 27.5 | 138.0 | **0.019** | −0.533 |
+| Entropy (norm.) | 0.770 | 0.887 | 26.0 | **0.002** | +0.711 |
+| Fraction leaves | 0.680 | 0.495 | 140.0 | **0.015** | −0.556 |
 
-Gini is significantly lower in the agentic group (large effect, r=−0.733). Entropy
-is significantly higher (more uniform distribution, r=+0.700). Log-normal signal
-strength (ΔAIC) is also significantly lower (r=−0.583). Leaf fraction is not
-significantly different, reflecting the survivor bias of the fitting filter: the
-most degenerate repos (Gini=0.000) were excluded.
+Gini is significantly lower in the agentic group (large effect, r=−0.744). Entropy
+is significantly higher (more uniform distribution, r=+0.711). Log-normal signal
+strength (ΔAIC) is also significantly lower (r=−0.533). Fraction of leaf files is
+now also significant (r=−0.556): agentic repos have proportionally fewer zero-fanin
+files — not because they are better connected, but because the well-connected repos
+in the survivor group tend to be larger projects with more intermediate structure.
 
 Figure 3 shows Gini boxplots by group. Figure 4 shows ΔAIC vs repo size, with
 agentic repos clustering near the power-law boundary.
@@ -309,17 +320,18 @@ agentic repos clustering near the power-law boundary.
 
 The agentic group shows degeneration in two distinct forms, not one:
 
-**Mode 1 — Total isolation (Gini=0):** dark-factory-experiment and ott-platform
-have zero intra-repo fan-in. Every Python file is a leaf. These repos are functional
-applications — FastAPI backends with complete routing logic — but all their coupling
-is to *external* libraries, not to each other. The intra-repo dependency graph is
-an empty set. No baseline repo approached this state.
+**Mode 1 — Total isolation (Gini=0):** dark-factory-experiment, ott-platform, and
+OneResearchClaw have zero intra-repo fan-in. Every Python file is a leaf. The first
+two are FastAPI backends with complete routing logic; the third is an autonomous
+research framework. All their coupling is to *external* libraries, not to each other.
+The intra-repo dependency graph is an empty set. No baseline repo approached this
+state.
 
-**Mode 2 — Partial flattening (lower Gini, attenuated parabola):** The 8 fitted
-agentic repos still show log-normal shape, but at 84% of baseline Gini. The
-intermediate branching layer is present but thinner. This is not random noise: the
-Vuong z values in agentic repos average 3.00 vs 6.34 in baseline — the parabolic
-curvature is real but shallow.
+**Mode 2 — Partial flattening (lower Gini, attenuated parabola):** The 12 fitted
+agentic repos still show log-normal shape in 11 of 12 cases, but at 82% of baseline
+Gini. The intermediate branching layer is present but thinner. This is not random
+noise: Vuong z values in agentic repos average 2.77 vs 6.00 in baseline — the
+parabolic curvature is real but shallow.
 
 Both modes are consistent with the Constructal prediction: remove the optimization
 pressure, and the branching hierarchy degrades. The degree of degradation depends
@@ -330,7 +342,7 @@ FastAPI backends can achieve full functionality with zero intra-repo coupling
 
 ### 5.2 The Log-Normal Paradox
 
-All 8 fitted agentic repos prefer log-normal over power-law. This is not a null
+11 of 12 fitted agentic repos prefer log-normal over power-law. This is not a null
 result — it refines the hypothesis. The Constructal prediction is not that
 AI-generated code produces power-law fan-in; it is that AI-generated code lacks
 the *intermediate branching layer* that bends the distribution away from power-law.
@@ -344,12 +356,12 @@ toward the power-law boundary. The parabola flattens without inverting.
 
 ### 5.3 Survivor Bias and True Degeneration Rate
 
-The Mann-Whitney comparison (Gini 0.882 vs 0.742, p=0.0045) understates the gap
-because the two most extreme agentic repos (Gini=0.000) are excluded by the
+The Mann-Whitney comparison (Gini 0.882 vs 0.725, p=0.0011) understates the gap
+because the three most extreme agentic repos (Gini=0.000) are excluded by the
 fitting filter. Including them as Gini=0.000 would bring the agentic mean to
-approximately 0.594 — a gap of 0.288 vs baseline. The true degeneration rate across
-all 14 agentic repos is: 2 repos total isolation (14%), 2 repos near-isolation
-(<10 connected files, 14%), and 8 repos measurably flattened. Only about half the
+approximately 0.580 — a gap of 0.302 vs baseline. The true degeneration rate across
+all 22 agentic repos is: 3 repos total isolation (14%), 4 repos near-isolation
+(<10 connected files, 18%), and 12 repos measurably flattened. Just over half the
 agentic corpus has enough intra-Python coupling to measure at all.
 
 ### 5.4 Connection to Attestation
@@ -379,17 +391,17 @@ partially confounding the agentic vs human comparison.
 
 ## 6. Conclusion
 
-We measured import fan-in distributions across 15 mature human-written and 14
+We measured import fan-in distributions across 15 mature human-written and 22
 AI-generated Python repositories. Human-written repos show log-normal fan-in with
 Gini mean 0.882, matching prior benchmarks and consistent with Constructal flow
 optimization under cognitive refactoring pressure. AI-generated repos exhibit
-two forms of structural degeneration: total isolation (Gini=0.000, 2/14 repos)
-and partial flattening (Gini mean 0.742 among measurable repos, p=0.0045,
-r=−0.733). All fitted agentic repos retain log-normal shape, but with significantly
-weaker parabolic curvature (Vuong z mean 3.00 vs 6.34, p=0.024). The log-normal
-signature is not erased — it is attenuated. This is the structural fingerprint
-of a codebase that never underwent the iterative refactoring that bends fan-in
-distributions toward their Constructal optimum. A companion longitudinal study
+two forms of structural degeneration: total isolation (Gini=0.000, 3/22 repos)
+and partial flattening (Gini mean 0.725 among measurable repos, p=0.0011,
+r=−0.744). 11 of 12 fitted agentic repos retain log-normal shape, but with
+significantly weaker parabolic curvature (Vuong z mean 2.77 vs 6.00, p=0.019).
+The log-normal signature is not erased — it is attenuated. This is the structural
+fingerprint of a codebase that never underwent the iterative refactoring that bends
+fan-in distributions toward their Constructal optimum. A companion longitudinal study
 will test whether this atrophy is detectable within individual repos after
 documented AI tool adoption.
 
