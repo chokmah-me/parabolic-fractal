@@ -65,7 +65,7 @@ signal strength within individual Python repositories?
 constructal law: flow systems that persist are those whose geometry minimizes
 resistance. Maillart & Sornette (2008) show that software package ecosystems follow
 log-normal size distributions, consistent with constructal-tree predictions. The
-companion paper (Elke Shayna 2026) extends this to intra-repo import topology,
+companion paper (Bilar 2026a) extends this to intra-repo import topology,
 finding that mature human-written Python repos fit log-normal fan-in while
 AI-generated repos trend toward the flatter power-law end.
 
@@ -313,5 +313,5 @@ data may not be long enough to see it.
 - Mao, T., Zhao, D., Tang, H., Wang, X., & Zhang, H. (2026). A large-scale empirical study of AI-generated code in real-world repositories. *arXiv:2603.27130*.
 - Paipuru, T. (2026). CodeCompass: Navigating the Navigation Paradox in Agentic Code Intelligence. *arXiv:2602.20048*.
 - Vuong, Q.H. (1989). Likelihood ratio tests for model selection and non-nested hypotheses. *Econometrica*, 57(2), 307–333.
-- Elke Shayna (2026). Fan-in distributions in human-written vs AI-generated Python codebases: a Constructal Law analysis. [companion preprint, chokmah-me/parabolic-fractal]
-- Elke Shayna (2026). Three regimes of capability attestation for autonomous agents. [forthcoming]
+- Bilar, D.Y. (2026a). Fan-in distributions in human-written vs AI-generated Python codebases: a Constructal Law analysis. [companion preprint, chokmah-me/parabolic-fractal]
+- Bilar, D.Y. (2026c). Three regimes of capability attestation for autonomous agents. [forthcoming]

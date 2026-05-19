@@ -158,6 +158,6 @@ functional applications built by AI agents, not AI tooling frameworks.
 Preprint forthcoming. In the meantime:
 
 ```
-Elke Shayna (2026). Fan-In Distributions in Human-Written vs AI-Generated Python
+Bilar, D.Y. (2026). Fan-In Distributions in Human-Written vs AI-Generated Python
 Codebases: A Constructal Law Analysis. [preprint]
 ```

@@ -90,7 +90,7 @@ government machine-law proof-of-concept). We provide the first structural eviden
 that AI-generated code differs measurably from human-written code in its
 architectural organization, independent of whether it passes tests. Three of 22 repos
 had zero internal structure — each file isolated from every other. A companion
-framework (Elke Shayna, forthcoming) shows that behavioral testing of AI agents is
+framework (Daniyel Yaacov Bilar, forthcoming) shows that behavioral testing of AI agents is
 mathematically intractable under adversarial conditions. Structural metrics like
 fan-in Gini offer a passive, non-gameable complement: a codebase whose Gini matches
 the human-written baseline has demonstrably undergone the kind of iterative
@@ -366,7 +366,7 @@ agentic corpus has enough intra-Python coupling to measure at all.
 
 ### 5.4 Connection to Attestation
 
-The three-regime attestation framework (Elke Shayna, forthcoming) shows that
+The three-regime attestation framework (Daniyel Yaacov Bilar, forthcoming) shows that
 behavioral verification of autonomous agents is intractable in Regime 3 (adversarial
 stochastic). Fan-in topology offers a complementary passive structural signal.
 Unlike behavioral tests, structural metrics require actual refactoring work to fake:
@@ -381,7 +381,8 @@ irreversible.
 Fan-in is first-order; it ignores call graphs, data flow, and semantic coupling.
 Agentic repo selection is biased toward projects with public AI attribution — private
 vibe-coded codebases may differ. Shallow cloning captures HEAD without evolutionary
-trajectory; a companion longitudinal study is in preparation. The Constructal
+trajectory; the companion longitudinal study (Bilar 2026b) finds that mature repos
+adopting AI tools do not exhibit Gini decline on a 12-month horizon. The Constructal
 interpretation is analogical; Bejan's framework was not formally derived for
 discrete directed graphs. FastAPI's design philosophy (thin routers, heavy external
 dependencies) may independently reduce intra-repo coupling regardless of authorship,
@@ -401,9 +402,10 @@ r=−0.744). 11 of 12 fitted agentic repos retain log-normal shape, but with
 significantly weaker parabolic curvature (Vuong z mean 2.77 vs 6.00, p=0.019).
 The log-normal signature is not erased — it is attenuated. This is the structural
 fingerprint of a codebase that never underwent the iterative refactoring that bends
-fan-in distributions toward their Constructal optimum. A companion longitudinal study
-will test whether this atrophy is detectable within individual repos after
-documented AI tool adoption.
+fan-in distributions toward their Constructal optimum. The companion longitudinal
+study (Bilar 2026b) finds that this atrophy does not appear in mature repos after
+documented AI adoption on a 12-month horizon, suggesting the flattening effect is
+specific to structural genesis rather than ongoing maintenance.
 
 ---
 
@@ -418,4 +420,6 @@ documented AI tool adoption.
 - Mao, T., Zhao, D., Tang, H., Wang, X., & Zhang, H. (2026). A large-scale empirical study of AI-generated code in real-world repositories. *arXiv:2603.27130*.
 - Paipuru, T. (2026). CodeCompass: Navigating the Navigation Paradox in Agentic Code Intelligence. *arXiv:2602.20048*.
 - Vuong, Q.H. (1989). Likelihood ratio tests for model selection and non-nested hypotheses. *Econometrica*, 57(2), 307-333.
-- Elke Shayna (2026). Three regimes of capability attestation for autonomous agents. [forthcoming]
+- Bilar, D.Y. (2026a). Fan-in distributions in human-written vs AI-generated Python codebases: a Constructal Law analysis. [this paper, chokmah-me/parabolic-fractal]
+- Bilar, D.Y. (2026b). Topological atrophy under agentic coding: longitudinal evidence for Constructal hierarchy resilience in AI-assisted software repositories. [companion preprint, chokmah-me/parabolic-fractal]
+- Bilar, D.Y. (2026c). Three regimes of capability attestation for autonomous agents. [forthcoming]
