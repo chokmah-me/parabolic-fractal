@@ -19,9 +19,9 @@ created 2024-2026 (Cohort B), identified by explicit AI authorship signals (CLAU
 `.cursor/rules`, `Co-authored-by: Cursor` commit trailers, or README self-attribution).
 In Cohort A, 14 of 15 projects show statistically significant log-normal fan-in
 (Vuong z > 1.96), with Gini mean 0.882, matching prior benchmarks for mature package
-ecosystems (PyPI, CRAN: Gini ≈ 0.88). In Cohort B, 32% of repos (7/22) exhibit
-structural degeneration — zero or near-zero intra-repo coupling, rendering fan-in
-distribution fitting impossible. Among the 12 Cohort B repos with sufficient coupling,
+ecosystems (PyPI, CRAN: Gini ≈ 0.88). In Cohort B, 10 of 22 repos could not be fitted (3 with Gini=0.000, 4 with
+fewer than 10 connected files, 3 too small or inaccessible); 32% exhibit zero or
+near-zero intra-repo coupling. Among the 12 Cohort B repos with sufficient coupling,
 Gini mean is 0.725 (Mann-Whitney U, p = 0.0011, rank-biserial r = −0.744), and
 log-normal signal strength is halved (mean Vuong z 2.77 vs 6.00, p = 0.019). 11 of
 12 still exhibit log-normal shape, but with markedly lower concentration and weaker

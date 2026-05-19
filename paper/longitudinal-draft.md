@@ -20,16 +20,21 @@ coding. Adoption dates are identified from two independent signals: AI attributi
 commit messages (`Co-authored-by: Copilot`, `noreply@anthropic.com`, etc.) and the
 first appearance of AI tool config files (`.github/copilot-instructions.md`,
 `CLAUDE.md`). We measure Gini coefficient, Vuong z (log-normal vs. power-law), and
-delta_AIC at monthly snapshots (24 months pre, 12 months post). Contrary to the
-"agentic flattening" hypothesis derived from cross-sectional evidence, neither repo
-shows Gini decline post-adoption. In Celery (12 months post-adoption), Gini
-increased significantly (p=0.031, paired Wilcoxon; last-6-pre mean 0.8664 vs.
-first-6-post mean 0.8680) and the log-normal signal strengthened. In Django
-(2 months post-adoption), Gini is unchanged (0.9327 vs. 0.9332). We interpret this
-as evidence that the flattening effect observed cross-sectionally is a structural
-genesis problem, not a maintenance problem: AI agents flatten topology when designing
-module structure from scratch, but AI-assisted contributions to established codebases
-follow the existing hierarchical import structure.
+delta_AIC at monthly snapshots (24 months pre, 12 months post).
+
+In this preliminary two-repo study, we find no evidence of Gini decline following
+AI adoption. In Celery (12 months post-adoption), Gini increased slightly
+(p=0.031, paired Wilcoxon; last-6-pre mean 0.8664 vs. first-6-post mean 0.8680)
+and the log-normal signal strengthened. In Django (2 months post-adoption), Gini
+is unchanged (0.9327 vs. 0.9332). Without a matched control group, we cannot rule
+out that these trajectories reflect continued natural maturation rather than any
+effect of AI adoption. We interpret the null result as consistent with — but not
+confirming — the hypothesis that the flattening effect observed cross-sectionally
+is a structural genesis problem, not a maintenance problem: AI agents may flatten
+topology when designing module structure from scratch, but AI-assisted contributions
+to established codebases appear to follow the existing hierarchical import structure.
+N=2 is insufficient for strong inference; these results are hypotheses to test
+against a larger cohort.
 
 ---
 
