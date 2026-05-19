@@ -1,6 +1,6 @@
 <p class="hebrew-epigraph" dir="rtl" lang="he">אִם יִרְצֶה הַשֵּׁם</p>
 
-# Topological Atrophy Under Agentic Coding: Longitudinal Evidence for Constructal Hierarchy Resilience in AI-Assisted Software Repositories
+# Topological Atrophy Under Agentic Coding: No Observed Gini Decline Following AI Adoption in Two Mature Python Repositories
 
 by **Daniyel Yaacov Bilar**, Chokmah LLC, chokmah-dyb@pm.me <p class="hebrew-date" dir="rtl" lang="he">ג׳ סִיוָן תשפ״ו</p>
 
@@ -86,8 +86,10 @@ measured cross-sectionally and at function level rather than topology level.
 
 **Navigation and structural blindness.** Paipuru (arXiv:2602.20048) demonstrates
 that agents without AST-derived graph access (CodeCompass) completely fail G3 tasks
-requiring structural dependency traversal. This explains the mechanism: agents
-cannot see the Constructal tree they degrade.
+requiring structural dependency traversal. This is consistent with a mechanism in
+which structural blindness produces architectural drift: agents that cannot traverse
+the import graph cannot feel the coupling pressure that would otherwise drive
+refactoring.
 
 **Change-point detection in software evolution.** Prior longitudinal studies of OSS
 structural change focus on coupling metrics, bug density, and code churn (Hassan &
@@ -141,11 +143,13 @@ PELT algorithm (Killick et al. 2012, implemented via `ruptures` library) applied
 to the Gini time series. Penalty parameter 3 (standard for single change-point).
 Detected change-point date compared to known adoption date (lag in days).
 
-### 3.5 Aggregate Analysis
+### 3.5 Per-Repo Analysis
 
-Repos aligned to their adoption date (month 0). Mean ± std of each metric plotted
-across all repos in the pre/post window. Paired Wilcoxon signed-rank test on
-last-6-months-pre vs first-6-months-post Gini per repo.
+For each repo, the last-6-months-pre and first-6-months-post Gini values are compared
+using a paired Wilcoxon signed-rank test (6 paired monthly observations per window).
+Alignment to adoption date (month 0) is shown in figures for visual inspection.
+With N=2 repos (one with a full 12-month post window, one with 2 months), cross-repo
+aggregation is not performed; results are reported per repo.
 
 ---
 
@@ -178,8 +182,12 @@ and Django (N=27 snapshots, 25 pre + 2 post).
 | Django | 2026-03-05 | 0.932–0.933 | 0.933 | 0.9327 | 0.9332 | +0.0005 | n/a (n=2 post) |
 
 Gini increased in both repos post-adoption. The increase in Celery is statistically
-significant but in the direction opposite to the flattening hypothesis. Django's
-post-adoption window is too short for inference.
+significant but in the direction opposite to the flattening hypothesis; the p=0.031
+reflects consistent direction of change across 6 paired months, not effect magnitude
+— Δ=0.0016 is negligible in absolute terms. Django's two post-adoption snapshots
+provide no usable trend information; it is reported for completeness but does not
+contribute to inference. This is effectively a single-repo longitudinal study (Celery)
+with a second repo pending sufficient post-adoption history.
 
 **Celery trajectory detail.** Gini sat around 0.858–0.860 through 2023, drifting up
 to 0.866–0.867 by early 2025. Post-adoption (June 2025–May 2026), the drift
@@ -215,6 +223,13 @@ adoption date and continued without inflection post-adoption.
 No detected change-point supports the atrophy hypothesis. All significant changes
 either precede adoption or show strengthening of the log-normal signal.
 
+The Introduction predicted a smooth Gini change-point at or near adoption (the
+conifold analogy). No such change-point was found in either repo. This is itself
+consistent with the genesis interpretation: if flattening requires the absence of
+any prior import hierarchy, mature repos adopting AI tools should show no topological
+transition at adoption — the hierarchy is already in place and constrains AI
+contributions from the first PR.
+
 ---
 
 ## 5. Discussion
@@ -235,22 +250,28 @@ tree with a differentiated middle layer.
 When an AI assistant contributes to an established codebase, it operates within the
 existing module structure. A Copilot suggestion in `celery/app/trace.py` imports
 what that file already imports. It does not spontaneously introduce new modules or
-reorganize the import graph. The Constructal tree is preserved because the AI is
-participating in a context that already has it.
+reorganize the import graph. The most parsimonious explanation consistent with both
+studies is that flattening requires the absence of any prior import hierarchy — a
+condition that holds at genesis but not at the PR level of a mature repo. An
+alternative is that AI contributions to Celery are small enough in volume relative
+to the total codebase that they could not move Gini regardless of their structure;
+12 months may not be long enough to accumulate sufficient AI-authored code to test
+the hypothesis.
 
-This distinction matters for how we interpret the structural risk of AI coding tools.
-The threat is not primarily in ongoing maintenance of existing projects. It is in
-new project construction and in wholesale rewrites, where no prior structure exists
-to constrain the AI.
+This distinction, if confirmed in a larger cohort, matters for how we interpret the
+structural risk of AI coding tools. The threat would lie primarily in new project
+construction and wholesale rewrites, where no prior structure exists to constrain
+the agent.
 
 ### 5.2 Why Celery's Log-Normal Signal Strengthened
 
 Between May 2025 and March 2026, Celery gained ~14 files (404 → 416) and both Vuong
-z and delta_AIC stepped up at a March 2026 change-point. The 14 files appear to
-have landed high in the import tree rather than as new leaf files, tightening the
-log-normal curvature. That is a plausible pattern if AI-assisted contributors
-follow existing import conventions strictly. It is also plausible noise: one repo,
-12 snapshots, a change-point detected by sliding window rather than PELT.
+z and delta_AIC stepped up at a March 2026 change-point. If the 14 files landed high in the import tree rather than as new leaf files, that
+would tighten the log-normal curvature — consistent with AI-assisted contributors
+following existing import conventions strictly. This was not verified by inspecting
+individual file fan-in ranks and should be treated as speculative. It is equally
+plausible noise: one repo, 12 snapshots, a change-point detected by sliding window
+rather than PELT.
 
 ### 5.3 Implications for Codebase Health Attestation
 
@@ -295,28 +316,33 @@ nothing to do with AI adoption at all.
 
 ## 6. Conclusion
 
-The hypothesis that AI adoption causes measurable Gini decline in mature codebases
-is not supported by this longitudinal study. In Celery, Gini increased significantly
-(p=0.031) in the 12 months following documented Copilot adoption, and the log-normal
-signal strengthened. In Django, the metric is stable with only 2 months of post-
-adoption data.
+This is effectively a single-repo longitudinal study: Celery provides 12 months of
+post-adoption data; Django contributes only 2 months and no usable trend. In Celery,
+Gini increased slightly (p=0.031, directional consistency across 6 paired months)
+following documented Copilot adoption, and the log-normal signal strengthened. The
+hypothesis that AI adoption causes measurable Gini decline on a 12-month horizon is
+not supported.
 
-The cross-sectional flattening effect is a structural genesis problem, not a
-maintenance problem. AI agents flatten topology when they build a codebase from
-scratch. When they contribute to an established one, they follow the existing
-import structure and leave the hierarchy intact. The structural risk is at project
-inception, not at the PR level of mature codebases.
+The cross-sectional flattening effect is consistent with being a structural genesis
+problem rather than a maintenance problem — but N=2 (effectively N=1) prevents
+strong inference. AI agents may flatten topology when they build a codebase from
+scratch and have no prior hierarchy to follow. When they contribute to an established
+codebase, they appear to follow the existing import structure without reorganizing the
+import graph, though an alternative explanation is that AI-authored volume is simply
+too small relative to the full codebase to move Gini in 12 months.
 
 Gini is still a useful one-shot diagnostic for new repos and AI-assisted rewrites.
 Whether flattening eventually appears in a mature repo under sustained AI-assisted
-development over 3–5 years is still open. Twelve months of Celery post-adoption
-data may not be long enough to see it.
+development over 3–5 years is open. Twelve months of Celery post-adoption data may
+not be long enough to see it, and a matched control group is needed to separate AI
+adoption effects from continued natural maturation.
 
 ---
 
 ## References
 
 - Bejan, A. & Lorente, S. (2011). The constructal law and the evolution of design in nature. *Physics of Life Reviews*.
+- Clauset, A., Shalizi, C.R. & Newman, M.E.J. (2009). Power-law distributions in empirical data. *SIAM Review*, 51(4), 661–703.
 - Hassan, A.E. & Holt, R.C. (2004). Predicting change propagation in software systems. *ICSM 2004*.
 - Killick, R., Fearnhead, P., & Eckley, I.A. (2012). Optimal detection of changepoints with a linear computational cost. *JASA*, 107(500), 1590–1598.
 - Maillart, T. & Sornette, D. (2008). Empirical tests of Zipf's law mechanism in open source Linux distribution. *Physical Review Letters*, 101, 218701. https://doi.org/10.1103/PhysRevLett.101.218701
