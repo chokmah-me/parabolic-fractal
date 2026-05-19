@@ -9,7 +9,8 @@ Code and data for the preprint:
 ## Key findings
 
 Import fan-in measures how many other files in a repo import a given file. We computed
-it for every `.py` file in 37 Python repos and compared the distribution shapes.
+it across 27 Python repos with sufficient coupling for distribution fitting (15
+baseline + 12 agentic), drawn from 37 cloned repos total.
 
 | Group | n (fitted) | Gini mean | LN wins | Vuong z mean |
 |-------|----------:|----------:|--------:|-------------:|

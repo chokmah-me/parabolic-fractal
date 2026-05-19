@@ -28,12 +28,12 @@ iterative cognitive refactoring pressure is removed from the development cycle.
 ## TL;DR by Audience
 
 **Software engineer / architect:** We parsed every `import` statement in 37 Python
-repos — 15 mature OSS projects and 22 AI-generated ones — and measured how unequally
-fan-in is distributed (Gini) and whether the rank-frequency curve is log-normal or
-power-law (AIC + Vuong test). Human-written repos: Gini 0.88, log-normal wins 14/15.
-AI-generated repos: three repos have *zero* intra-repo imports (every file only
-touches external packages), and among the 12 with sufficient coupling, Gini drops
-to 0.72 (p=0.001, large effect). The parabolic log-log curvature weakens but doesn't
+repos (15 mature OSS, 22 AI-generated), fitted distributions on the 27 with sufficient
+coupling, and measured how unequally fan-in is distributed (Gini) and whether the
+rank-frequency curve is log-normal or power-law (AIC + Vuong test). Human-written
+repos: Gini 0.88, log-normal wins 14/15. AI-generated repos: three repos have *zero*
+intra-repo imports (every file only touches external packages), and among the 12 with
+sufficient coupling, Gini drops to 0.72 (p=0.001, large effect). The parabolic log-log curvature weakens but doesn't
 flip. Practical upshot: fan-in Gini is a cheap, CI-friendly structural health metric.
 If your repo's Gini is trending toward 0.6, your intermediate abstraction layer is
 dissolving.
