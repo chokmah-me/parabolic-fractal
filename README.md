@@ -35,7 +35,7 @@ the measurement threshold, not in it.
 
 ## Longitudinal study
 
-**Companion paper:** `paper/longitudinal-draft.md`
+**Companion paper:** `paper/dyb-2026q-AI-Python-constructal-v1-REL.md`
 
 The cross-sectional design cannot rule out that AI repos and human repos differ on
 confounds (age, size, contributors). The longitudinal study tracks the same repos
@@ -83,8 +83,8 @@ data/
   longitudinal/             snapshot JSONs and timeline CSVs (gitignored)
 
 paper/
-  draft.md                  cross-sectional paper
-  longitudinal-draft.md     longitudinal companion paper
+  dyb-2026q-AI-Python-constructal-v1-REL.md   release paper (cross-sectional + longitudinal pilot)
+  dyb-2026q-AI-Python-constructal-v1-REL.pdf   PDF version
 
 figures/
   fig[1-4]_*.png            cross-sectional figures
@@ -156,12 +156,8 @@ functional applications built by AI agents, not AI tooling frameworks.
 ## Citation
 
 ```
-Bilar, Daniyel Yaacov (2026a). Fan-In Distributions in Human-Written vs AI-Generated
-Python Codebases: A Constructal Law Analysis. Chokmah LLC. [preprint]
-https://github.com/chokmah-me/parabolic-fractal
-
-Bilar, Daniyel Yaacov (2026b). Topological Atrophy Under Agentic Coding: Longitudinal
-Evidence for Constructal Hierarchy Resilience in AI-Assisted Software Repositories.
-Chokmah LLC. [preprint]
+Bilar, Daniyel Yaacov (2026). Fan-In Distributions in Human-Written vs AI-Generated
+Python Codebases: A Constructal Law Analysis. Chokmah LLC.
+https://doi.org/10.5281/zenodo.20318458
 https://github.com/chokmah-me/parabolic-fractal
 ```
