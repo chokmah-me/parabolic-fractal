@@ -11,6 +11,7 @@ Usage:
 import csv
 import argparse
 import numpy as np
+from scipy.stats import mannwhitneyu
 from pathlib import Path
 
 
@@ -66,7 +67,7 @@ def main():
                               "(e.g. repos flagged in data/contamination-baseline.csv)")
     parser.add_argument("--out", default="",
                          help="Optional path to also write results as CSV "
-                              "(metric,bl_mean,ag_mean,U,p,r,n_baseline,n_agentic,excluded_repos)")
+                              "(p = normal approximation, p_exact = exact test)")
     args = parser.parse_args()
 
     groups = load(Path(args.summary))
@@ -88,6 +89,7 @@ def main():
         ("delta_aic",  "Delta AIC (log-normal advantage)"),
         ("frac_leaves","Fraction zero-fanin files"),
         ("entropy_norm","Normalized entropy"),
+        ("vuong_z",    "z_lr (log-normal preference)"),
     ]
 
     print(f"\nn(baseline)={len(bl)}, n(agentic)={len(ag)}\n")
@@ -103,7 +105,7 @@ def main():
         print(f"{label:<28} {np.mean(a):>9.3f} {np.mean(b):>9.3f} {U:>8.1f} {p:>7.4f}{sig:1s} {r:>6.3f}")
         out_rows.append({
             "metric": key, "bl_mean": np.mean(a), "ag_mean": np.mean(b),
-            "U": U, "p": p, "r": r,
+            "U": U, "p": p, "p_exact": mannwhitneyu(a, b, alternative="two-sided", method="exact").pvalue, "r": r,
             "n_baseline": len(bl), "n_agentic": len(ag),
             "excluded_repos": ";".join(sorted(excluded)),
         })
@@ -115,7 +117,7 @@ def main():
     if args.out:
         out_path = Path(args.out)
         out_path.parent.mkdir(parents=True, exist_ok=True)
-        fields = ["metric", "bl_mean", "ag_mean", "U", "p", "r",
+        fields = ["metric", "bl_mean", "ag_mean", "U", "p", "p_exact", "r",
                   "n_baseline", "n_agentic", "excluded_repos"]
         with open(out_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fields)

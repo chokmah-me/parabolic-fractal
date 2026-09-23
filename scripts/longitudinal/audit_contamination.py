@@ -26,7 +26,7 @@ import subprocess
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from find_adoption_date import _COMMIT_RE  # noqa: E402
+from find_adoption_date import _COMMIT_RE, CONFIG_FILES  # noqa: E402
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 BASELINE_DIR = REPO_ROOT / "data" / "repos" / "baseline"
@@ -102,6 +102,16 @@ def summarize(scanned: int, hits: list[dict], prefix: str) -> dict:
     }
 
 
+def config_signal(repo: Path, rev: str) -> tuple[str, str]:
+    """Earliest AI config file added in history reachable from rev: (date, path)."""
+    found = []
+    for cfg in CONFIG_FILES:
+        dates = _git(repo, "log", rev, "--diff-filter=A", "--format=%ad", "--date=short", "--", cfg).stdout.split()
+        if dates:
+            found.append((min(dates), cfg))
+    return min(found) if found else ("", "")
+
+
 def commit_count(repo: Path) -> int:
     result = _git(repo, "rev-list", "--all", "--count")
     try:
@@ -144,6 +154,9 @@ def process_repo(repo: Path, skip_fetch: bool) -> dict:
     n_all, all_hits = attributed_commits(repo, "--all")
     row.update(summarize(n_snap, snap_hits, "at_snapshot"))
     row.update(summarize(n_all, all_hits, "all_refs"))
+    row["config_date_at_snapshot"], row["config_file_at_snapshot"] = config_signal(repo, "HEAD")
+    signals = [d for d in (row["first_attributed_at_snapshot"][:10], row["config_date_at_snapshot"]) if d]
+    row["adoption_date_at_snapshot"] = min(signals) if signals else ""
     snap_shas = {h["sha"] for h in snap_hits}
     row["_hits"] = [{"repo": repo.name, **h, "at_snapshot": h["sha"] in snap_shas} for h in all_hits]
     return row
@@ -161,7 +174,8 @@ def write_hits_csv(rows: list[dict], out_path: Path) -> None:
 
 def write_contamination_csv(rows: list[dict], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    fields = ["repo", "error", "snapshot_sha", "snapshot_date"]
+    fields = ["repo", "error", "snapshot_sha", "snapshot_date", "adoption_date_at_snapshot",
+              "config_date_at_snapshot", "config_file_at_snapshot"]
     for scope in ("at_snapshot", "all_refs"):
         fields += [f"commits_{scope}", f"attributed_{scope}", f"first_attributed_{scope}",
                    f"first_sha_{scope}", f"first_subject_{scope}",
@@ -176,7 +190,7 @@ def write_contamination_csv(rows: list[dict], out_path: Path) -> None:
 def write_provenance_csv(rows: list[dict], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fields = ["repo", "group", "error", "remote_url", "commits", "shallow",
-              "first_commit_date", "snapshot_date", "last_commit_date",
+              "first_commit_date", "snapshot_date", "last_commit_date", "adoption_date_at_snapshot",
               "attributed_at_snapshot", "attributed_all_refs"]
     with open(out_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")

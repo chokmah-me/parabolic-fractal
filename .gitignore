@@ -2,8 +2,8 @@
 data/repos/*
 !data/repos/provenance.csv
 
-# Longitudinal full clones and snapshot data
-data/longitudinal/
+# Longitudinal per-snapshot fan-in (timeline.csv files are tracked)
+data/longitudinal/*/*.json
 
 # Python
 __pycache__/
@@ -15,3 +15,7 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# v1.1 pilot: keep timeline.csv and pilot_summary.csv, not per-snapshot fan-in
+data/longitudinal-v1.1/*/*.json
+data/longitudinal-v1.1/_logs/

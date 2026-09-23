@@ -1,7 +1,7 @@
 Creative Commons Attribution 4.0 International (CC BY 4.0)
 
-The paper text (dyb-2026q-AI-Python-constructal-v1-REL.md and derived PDF) and all figures in
-results/ are licensed under CC BY 4.0.
+The paper text (every paper/dyb-2026q-AI-Python-constructal-*-REL.md version and its derived
+PDF), any sketchnote images in paper/, and all figures in figures/ are licensed under CC BY 4.0.
 
 Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
 

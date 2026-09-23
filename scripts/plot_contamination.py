@@ -2,8 +2,8 @@
 plot_contamination.py
 
 Figures for the v1.1 post-release audit (paper Section 7.7):
-  fig6_attribution_timeline.png  when AI-attributed commits occur in Cohort A
-  fig7_gini_by_repo.png          per-repo Gini, Cohort A split by attribution
+  fig7_attribution_timeline.png  when AI-attributed commits occur in Cohort A
+  fig8_gini_by_repo.png          per-repo Gini, Cohort A split by attribution
 
 Reads only committed CSVs (no clones needed):
   data/attributed-commits-baseline.csv, data/contamination-baseline.csv,
@@ -105,6 +105,10 @@ def fig_timeline():
     for r in repos:
         xs = year_frac(cont[r]["snapshot_date"])
         ax_zoom.vlines(xs, y[r] - 0.38, y[r] + 0.38, color=INK, lw=1.1, zorder=4)
+        if cont[r]["config_date_at_snapshot"]:
+            xc = year_frac(cont[r]["config_date_at_snapshot"])
+            for ax in (ax_full, ax_zoom):
+                ax.plot(xc, y[r], marker="D", ms=4.5, mfc="white", mec=INK, mew=0.9, ls="none", zorder=5)
         n_attr = int(cont[r]["attributed_at_snapshot"])
         n_all = int(cont[r]["commits_at_snapshot"])
         ax_zoom.text(zoom[1] + 0.03, y[r], f"{n_attr:,} / {n_all:,}", va="center",
@@ -120,30 +124,37 @@ def fig_timeline():
         Line2D([], [], marker="|", ms=7, mew=0.9, ls="none", color=RED,
                label="attributed commit in the measured snapshot"),
         Line2D([], [], marker="|", ms=7, mew=0.9, ls="none", color=LATE,
-               label="attributed commit after the snapshot"),
+               label="attributed commit not in the snapshot"),
         Line2D([], [], marker="|", ms=9, mew=1.1, ls="none", color=INK,
                label="snapshot measured in v1.0.0"),
+        Line2D([], [], marker="D", ms=4.5, mfc="white", mec=INK, mew=0.9, ls="none",
+               label="AI config file added"),
     ]
     fig.legend(handles=handles, loc="upper left", bbox_to_anchor=(0.1, 0.02),
-               ncol=3, frameon=False, fontsize=7.5, handletextpad=0.3, columnspacing=1.4)
+               ncol=2, frameon=False, fontsize=7.5, handletextpad=0.3, columnspacing=1.4)
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / "fig6_attribution_timeline.png")
+    fig.savefig(OUT / "fig7_attribution_timeline.png")
     plt.close(fig)
 
 
 def fig_gini():
     summary = read(DATA / "summary.csv")
-    cont = {r["repo"]: int(r["attributed_at_snapshot"]) for r in read(DATA / "contamination-baseline.csv")}
+    cont = {r["repo"]: r for r in read(DATA / "contamination-baseline.csv")}
 
     rows = []
     for r in summary:
         g = float(r["gini"])
+        c = cont.get(r["repo"])
         if r["group"] == "agentic":
             rows.append((g, r["repo"], "agentic"))
-        elif cont.get(r["repo"], 0) > 0:
-            rows.append((g, f"{r['repo']} ({cont[r['repo']]:,})", "attributed"))
+        elif c and c["adoption_date_at_snapshot"]:
+            n = int(c["attributed_at_snapshot"])
+            tag = f"{n:,}" if n else "config file"
+            rows.append((g, f"{r['repo']} ({tag})", "attributed"))
         else:
             rows.append((g, r["repo"], "clean"))
+    n_clean = sum(k == "clean" for _, _, k in rows)
+    n_att = sum(k == "attributed" for _, _, k in rows)
     rows.sort(key=lambda t: t[0])
 
     fig, ax = plt.subplots(figsize=(5.2, 5.6))
@@ -165,19 +176,19 @@ def fig_gini():
 
     handles = [
         Line2D([], [], marker="o", ls="none", ms=5.5, color=BLUE, mec="white",
-               label="Cohort A, no attributed commit at snapshot (n=6)"),
+               label=f"Cohort A, no AI signal in the snapshot (n={n_clean})"),
         Line2D([], [], marker="o", ls="none", ms=5.5, mfc="white", mec=BLUE, mew=1.3,
-               label="Cohort A, attributed commits at snapshot (n=9; count in parentheses)"),
+               label=f"Cohort A, AI signal in the snapshot (n={n_att}; attributed commits in parentheses)"),
         Line2D([], [], marker="o", ls="none", ms=5.5, color=RED, mec="white",
                label="Cohort B, agentic (n=12 fitted)"),
     ]
     ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(-0.02, 1.0),
               frameon=False, fontsize=7.5, handletextpad=0.3)
-    fig.savefig(OUT / "fig7_gini_by_repo.png")
+    fig.savefig(OUT / "fig8_gini_by_repo.png")
     plt.close(fig)
 
 
 if __name__ == "__main__":
     fig_timeline()
     fig_gini()
-    print(f"Wrote {OUT / 'fig6_attribution_timeline.png'} and {OUT / 'fig7_gini_by_repo.png'}")
+    print(f"Wrote {OUT / 'fig7_attribution_timeline.png'} and {OUT / 'fig8_gini_by_repo.png'}")

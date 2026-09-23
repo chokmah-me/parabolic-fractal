@@ -1,0 +1,41 @@
+{
+  "title": "parabolic-fractal: code and data for \"Fan-In Distributions in Human-Written vs AI-Generated Python Codebases: A Constructal Law Analysis\"",
+  "version": "v1.1.0",
+  "upload_type": "software",
+  "description": "<p>Code, data, and figures for the paper <em>Fan-In Distributions in Human-Written vs AI-Generated Python Codebases: A Constructal Law Analysis</em> (paper, all versions: <a href=\"https://doi.org/10.5281/zenodo.20313668\">10.5281/zenodo.20313668</a>).</p><p>v1.1.0 accompanies paper v1.1, which corrects eight errors in v1.0.0, extends the longitudinal pilot from two repos to all eight Cohort A repos that meet its inclusion criteria, and adds a post-release audit. The main cross-sectional result, lower fan-in Gini in Cohort B, holds: 10 of the 15 Cohort A snapshots contain a declared AI signal (421 of 221,145 commits in 9 repos carry an attribution, and a tenth, Django, has an AI configuration file), and with those ten removed Cohort A Gini remains higher (exact Mann-Whitney p=0.027, n=5 vs. 12), while entropy, DAIC and leaf fraction lose significance. The longitudinal pilot finds no Gini decline after adoption in eight repos (Gini rose in six; pooled exact Wilcoxon p=0.195).</p><p><code>python scripts/check_paper_claims.py</code> recomputes every number in the paper's Version Note, Sections 5 and 6, and Section 7.7, and exits nonzero on any mismatch. Code is MIT-licensed; paper text and figures are CC BY 4.0 (LICENSE-PAPER.txt).</p>",
+  "creators": [
+    {
+      "name": "Bilar, Daniyel Yaacov",
+      "affiliation": "Chokmah LLC",
+      "orcid": "0000-0002-9040-6914"
+    }
+  ],
+  "keywords": [
+    "fan-in",
+    "constructal law",
+    "software metrics",
+    "Gini coefficient",
+    "log-normal distribution",
+    "AI-generated code",
+    "Python",
+    "software architecture",
+    "AI attribution",
+    "reproducibility"
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.20313668",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-preprint",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://github.com/chokmah-me/parabolic-fractal/tree/v1.1.0",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ]
+}

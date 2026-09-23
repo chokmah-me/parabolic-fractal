@@ -37,7 +37,9 @@ def _commit_before(repo: Path, target_date: date, tip: str = "HEAD") -> str | No
     tip must be a stable ref (branch name or full SHA) — not HEAD if the repo
     may be in detached-HEAD state during iteration.
     """
-    out = _git(repo, "rev-list", "-n", "1",
+    # --first-parent keeps to the mainline; without it, PR-branch commits merged
+    # later (or a merged-in foreign history) can be picked for an earlier date.
+    out = _git(repo, "rev-list", "-n", "1", "--first-parent",
                f"--before={target_date.isoformat()}T23:59:59", tip)
     return out if out else None
 
@@ -61,7 +63,8 @@ def _is_shallow(repo: Path) -> bool:
 
 
 def walk(repo: Path, adoption_date: date, out_dir: Path,
-         pre_months: int = 24, post_months: int = 12) -> None:
+         pre_months: int = 24, post_months: int = 12,
+         end_date: date | None = None) -> None:
     if _is_shallow(repo):
         print(f"  ERROR: {repo.name} is a shallow clone. Re-clone without --depth 1.")
         print(f"  Run: git clone https://... {repo}")
@@ -70,8 +73,8 @@ def walk(repo: Path, adoption_date: date, out_dir: Path,
 
     pre_start = adoption_date - timedelta(days=30 * pre_months)
     post_end_ideal = adoption_date + timedelta(days=30 * post_months)
-    today = date.today()
-    post_end = min(post_end_ideal, today)
+    # Snapshots past the tip's own date would repeat the tip, so end no later than that.
+    post_end = min(post_end_ideal, end_date or date.today())
 
     snapshots = _month_range(pre_start, post_end)
     print(f"  {len(snapshots)} snapshots from {pre_start} to {post_end}")
@@ -129,6 +132,7 @@ def main():
     parser.add_argument("--out-dir", required=True)
     parser.add_argument("--pre-months", type=int, default=24)
     parser.add_argument("--post-months", type=int, default=12)
+    parser.add_argument("--end-date", help="YYYY-MM-DD; last snapshot date (default: today)")
     args = parser.parse_args()
 
     repo = Path(args.repo)
@@ -136,7 +140,8 @@ def main():
     out_dir = Path(args.out_dir) / repo.name
 
     print(f"Walking {repo.name} (adoption: {adoption_date})")
-    walk(repo, adoption_date, out_dir, args.pre_months, args.post_months)
+    end_date = date.fromisoformat(args.end_date) if args.end_date else None
+    walk(repo, adoption_date, out_dir, args.pre_months, args.post_months, end_date)
     print("Done.")
 
 

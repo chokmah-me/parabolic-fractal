@@ -19,6 +19,7 @@ Returns ISO date string (of first declared attribution) or None.
 Usage:
     python find_adoption_date.py --repo /path/to/repo
     python find_adoption_date.py --repo /path/to/repo --verbose
+    python find_adoption_date.py --repo /path/to/repo --rev HEAD   # history of the checked-out snapshot only
 """
 
 import re
@@ -76,10 +77,10 @@ _FIELD_SEP = "\x1f"
 _RECORD_SEP = "\x1e"
 
 
-def earliest_commit_signal(repo: Path, verbose: bool = False) -> datetime | None:
+def earliest_commit_signal(repo: Path, verbose: bool = False, rev: str = "--all") -> datetime | None:
     # Control-char separators keep multi-line bodies intact; trailers usually sit at the end.
     fmt = f"%ai{_FIELD_SEP}%s{_FIELD_SEP}%b{_RECORD_SEP}"
-    log = _git(repo, "log", "--all", f"--format={fmt}")
+    log = _git(repo, "log", rev, f"--format={fmt}")
     earliest = None
     for record in log.split(_RECORD_SEP):
         record = record.strip("\n")
@@ -102,11 +103,11 @@ def earliest_commit_signal(repo: Path, verbose: bool = False) -> datetime | None
     return earliest
 
 
-def earliest_config_signal(repo: Path, verbose: bool = False) -> datetime | None:
+def earliest_config_signal(repo: Path, verbose: bool = False, rev: str = "--all") -> datetime | None:
     earliest = None
     for cfg in CONFIG_FILES:
         # git log for first time this path was added
-        out = _git(repo, "log", "--all", "--diff-filter=A",
+        out = _git(repo, "log", rev, "--diff-filter=A",
                    "--format=%ai", "--", cfg)
         for line in out.splitlines():
             line = line.strip()
@@ -123,10 +124,10 @@ def earliest_config_signal(repo: Path, verbose: bool = False) -> datetime | None
     return earliest
 
 
-def find_adoption_date(repo: Path, verbose: bool = False) -> str | None:
+def find_adoption_date(repo: Path, verbose: bool = False, rev: str = "--all") -> str | None:
     """Return the ISO date of the earliest declared-AI-attribution signal, or None."""
-    commit_dt = earliest_commit_signal(repo, verbose)
-    config_dt = earliest_config_signal(repo, verbose)
+    commit_dt = earliest_commit_signal(repo, verbose, rev)
+    config_dt = earliest_config_signal(repo, verbose, rev)
 
     candidates = [d for d in [commit_dt, config_dt] if d is not None]
     if not candidates:
@@ -138,10 +139,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", required=True)
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--rev", default="--all",
+                        help="history to scan: --all (every ref) or a ref such as HEAD (paper v1.1 uses HEAD, the snapshot)")
     args = parser.parse_args()
 
     repo = Path(args.repo)
-    date = find_adoption_date(repo, args.verbose)
+    date = find_adoption_date(repo, args.verbose, args.rev)
     if date:
         print(f"Declared attribution date: {date}")
     else:
