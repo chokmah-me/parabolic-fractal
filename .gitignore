@@ -1,5 +1,6 @@
 # Cloned repos — re-cloneable via collect_repos.py
-data/repos/
+data/repos/*
+!data/repos/provenance.csv
 
 # Longitudinal full clones and snapshot data
 data/longitudinal/

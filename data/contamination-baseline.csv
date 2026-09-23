@@ -1,0 +1,16 @@
+repo,commits_scanned,attributed_commits,first_attributed_date,sample_sha,sample_subject
+aiohttp,14164,3,2026-05-16 12:34:16 -0700,edc1cc2ba1d571c2f53db9e11e190aa7bde7f634,Bump benchmark CI job timeout to 15 minutes (#12565)
+celery,13332,9,2025-05-09 21:33:07 +0300,5c1a13cffe0331391bf8bc808196a1573f8922ad,Support apply_async without queue argument on quorum queues (#9686)
+click,3374,0,,,
+django,34948,0,,,
+fastapi,7713,3,2026-02-17 01:59:14 -0800,faee822574d3c202123f48eb09b9bd207385335b,🎨 Upgrade typing syntax for Python 3.10 (#14932)
+flask,5557,0,,,
+httpx,1523,0,,,
+numpy,42167,24,2025-10-10 16:50:23 +0530,47db4f1b0a7dba2f1808e0d812a9e7b30747520b,Update doc/release/upcoming_changes/29009.expiring.rst
+pandas,39081,1067,2025-12-14 00:50:13 +0800,04a554c9f17bdc06e152e3e9250c40dbaf523897,BUG: Add logical operators to pd.col Expression class (#63330)
+pydantic,5746,4,2026-03-08 21:10:32 +0000,af85f64e9a88ac236e0252de63840f0059c83ac2,Add Capital One to 'Who is using Pydantic' (#12903)
+pytest,17781,132,2025-04-11 21:25:24 +0200,33ebdb1ab1e795a4943eda4f8f6c08c2acf166dd,fix #6881: add parametrize_long_str_id_strategy ini option
+requests,6495,1,2026-03-02 17:49:19 -0500,b2a1d33f571518ca9a6148e7da787cc5827f897a,Increase chardet upper limit to 8
+scrapy,11511,5,2026-02-20 16:36:26 +0200,da1a6b7ebca5fc7d35458d821c93331e9080e993,Add security warning about pickle files in JOBDIR (#7274)
+sqlalchemy,18324,0,,,
+tornado,5133,33,2026-09-05 22:05:19 +0000,15f056080d8e456f92cca8ad0c33e5a5480414ac,curl_httpclient: Bound memory used by streaming_callback

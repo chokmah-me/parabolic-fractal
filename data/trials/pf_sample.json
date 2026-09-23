@@ -1,0 +1,272 @@
+[
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "docs: add CLAUDE-INVENTORY"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Update README for v1.0.0 release\r\n\r\nPoint paper references to release file, update repo layout tree, and\r\nadd Zenodo DOI to citation block.\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Update README for v1.0.0 release\r\n\r\nPoint paper references to release file, update repo layout tree, and\r\nadd Zenodo DOI to citation block.\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Merge pull request #1 from chokmah-me/main\r\n\r\nRelease v1.0.0"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Release v1.0.0"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Delete paper/longitudinal-draft.md"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Delete paper/draft.md"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Address peer review of longitudinal draft\r\n\r\n- Title: remove \"resilience\", state finding accurately\r\n- Section 2 Paipuru: \"consistent with a mechanism\" not \"explains the mechanism\"\r\n- Section 3.5: rewrite to describe what was actually done (per-repo, not aggregate)\r\n- Section 4.2: flag Django as non-contributing; note Wilcoxon p reflects\r\n  directional consistency not effect magnitude (delta=0.0016)\r\n- Section 4.4: add paragraph resolving the conifold prediction — no change-point\r\n  at adoption "
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Fix Maillart in-text citations to match what the paper actually showed\r\n\r\nMaillart & Sornette (2008) demonstrated Zipf's power law in Linux packages\r\nvia Gibrat's proportional growth, not log-normal. Both papers previously\r\nattributed a log-normal finding to this citation, which was wrong.\r\n\r\nCorrected framing: Maillart showed Gibrat's law operates in software;\r\nClauset et al. (2009) showed finite-size bounds bend that growth toward\r\nlog-normal. This is now the correct two-step argument in both "
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Fix Maillart & Sornette reference in both papers\r\n\r\nCorrect title, journal, and DOI; remove wrong arXiv ID (0805.3397 is a\r\nfinance paper unrelated to software structure).\r\n\r\nCorrect citation: Empirical tests of Zipf's law mechanism in open source\r\nLinux distribution. PRL 101, 218701 (2008).\r\nDOI: 10.1103/PhysRevLett.101.218701\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Address peer review: scope, mechanism, citations, confounds\r\n\r\n- Cohort B reframed as publicly AI-attributed repos throughout; selection\r\n  bias (single-author short-lifespan skew) flagged in abstract and intro\r\n- Causal mechanism rewritten as hypothesis (\"we hypothesize\") and\r\n  \"identical cost\" claim softened to \"no additional cognitive cost\"\r\n- \"Material disengagement\" and dirt road metaphor replaced with precise language\r\n- Policy-maker TL;DR: regulatory recommendation hedged to \"worth inves"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Tighten abstracts for Zenodo upload\r\n\r\ndraft.md: make Cohort B exclusion count explicit (10/22) in abstract so\r\nskimming readers see the filter before the Gini comparison.\r\n\r\nlongitudinal-draft.md: reframe abstract as preliminary two-repo study;\r\nadd missing-control-group caveat; replace overconfident null-result claim\r\nwith hedged language matching Section 5.5.\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Fix README citation: correct author name, add longitudinal paper entry\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Add byline, ORCID, Hebrew epigraph and date to cross-sectional draft\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Add byline, ORCID, Hebrew date and epigraph to longitudinal draft\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Fix author name to Daniyel Yaacov Bilar; add longitudinal cite to cross-sectional draft\r\n\r\nCross-sectional draft now cites longitudinal companion paper (Bilar 2026b) in\r\nlimitations and conclusion rather than \"in preparation\". References use a/b/c\r\nsuffix to distinguish the three Bilar 2026 papers.\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Update README with longitudinal study section and results\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Add longitudinal companion paper results and fix walk_history detached-HEAD bug\r\n\r\nwalk_history.py was using HEAD as the rev-list starting point inside the checkout\r\nloop, causing all snapshots to resolve to the same commit after the first detach.\r\nFixed by capturing the branch tip SHA before the loop and passing it as the stable\r\nref.\r\n\r\nData collected: Celery (37 monthly snapshots, adoption 2025-05-08, 12 months post)\r\nand Django (27 snapshots, adoption 2026-03-05, 2 months post). Hypothesis r"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Fix repo count: 27 fitted (15+12), 37 cloned total\r\n\r\nREADME and TL;DR both said \"37 repos\" which conflated all cloned\r\nrepos with the 27 that passed the quality filter for analysis.\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Add README with current results (n=15 baseline, n=12 agentic)\r\n\r\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Add wave-2 agentic repos (n=8 new), update results to n=22 cohort B\r\n\r\nAdds 8 new agentic repos to collect_repos.py. After quality filtering\r\n(>=10 files with positive fan-in), 4 pass: borrowhood, CLI-Anything-WEB,\r\ncodebase-mcp, marsa-planner. Fitted agentic group grows from 8 to 12.\r\n\r\nUpdated stats: Gini 0.742->0.725 (p=0.0011, r=-0.744), Vuong z mean\r\n2.77 vs 6.00 (p=0.019), LN wins 11/12. Fraction-leaves test is now\r\nsignificant at p=0.015. Three repos show zero coupling (was two).\r\nBaselin"
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "msg": "Initial release: fan-in topology study, agentic vs baseline Python repos\r\n\r\n- 15 baseline OSS repos + 14 agentic repos analyzed\r\n- Gini 0.882 (baseline) vs 0.742 (agentic), p=0.0045, r=-0.733\r\n- 2 agentic repos: zero intra-repo coupling (Gini=0.000)\r\n- AIC + Vuong closeness test for log-normal vs power-law\r\n- Full pipeline: collect, compute_fanin, fit_distributions, visualize, compare_groups\r\n- Longitudinal pipeline for future within-repo study\r\n- Paper draft + 6-audience TL;DR\r\n\r\nCo-Authored-By"
+  },
+  {
+    "group": "agentic",
+    "repo": "agentic-sprint",
+    "msg": "Update skills to Anthropic 2025 specification\r\n\r\n- Convert names to kebab-case\r\n- Add author, license, allowed-tools fields"
+  },
+  {
+    "group": "agentic",
+    "repo": "camp2025-stock",
+    "msg": "chore(deps): bump next from 15.4.8 to 15.4.10 in /frontend\r\n\r\nBumps [next](https://github.com/vercel/next.js) from 15.4.8 to 15.4.10.\r\n- [Release notes](https://github.com/vercel/next.js/releases)\r\n- [Changelog](https://github.com/vercel/next.js/blob/canary/release.js)\r\n- [Commits](https://github.com/vercel/next.js/compare/v15.4.8...v15.4.10)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: next\r\n  dependency-version: 15.4.10\r\n  dependency-type: direct:production\r\n...\r\n\r\nSigned-off-by: dependab"
+  },
+  {
+    "group": "agentic",
+    "repo": "claude-cli-rest-api",
+    "msg": "Initial commit: Claude Code MCP REST API wrapper\r\n\r\n- FastMCP-based server wrapping claude CLI with model selection\r\n- MCPO proxy for REST API with auto-generated OpenAPI docs\r\n- Support for Sonnet, Haiku, Opus models\r\n- Think modes: think, think-hard, ultrathink\r\n- Comprehensive test suite and startup automation\r\n- Complete documentation and examples\r\n\r\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\r\n\r\nCo-Authored-By: Claude <noreply@anthropic.com>"
+  },
+  {
+    "group": "agentic",
+    "repo": "codebase-mcp",
+    "msg": "Update README.md"
+  },
+  {
+    "group": "agentic",
+    "repo": "dark-factory-experiment",
+    "msg": "feat: tool-aware continuous live tool-activity indicator (#224)\r\n\r\n* feat: tool-aware continuous live tool-activity indicator\r\n\r\nRaw video IDs leaked into the streaming indicator for get_video_transcript\r\nand the indicator flashed back to bare dots between consecutive tool calls.\r\n\r\n- Add async _build_tool_status_label in openrouter.py to produce human-readable\r\n  labels: \"Searching the library: \\\"<query>\\\"\" for search tools and\r\n  \"Reading transcript: <video title>\" for transcripts (title resol"
+  },
+  {
+    "group": "agentic",
+    "repo": "deepseek_ocr_app",
+    "msg": "Fix RCE vulnerability and harden security\r\n\r\n- Replace eval() with ast.literal_eval() in pdf_utils.py to fix\r\n  unauthenticated remote code execution via crafted PDF uploads\r\n  (reported by OX Security)\r\n- Sanitize HTML output with DOMPurify to prevent XSS\r\n- Restrict CORS origins (configurable via CORS_ORIGINS env var)\r\n- Suppress raw exception details in API error responses\r\n- Cap Image.MAX_IMAGE_PIXELS to prevent decompression bomb DoS\r\n- Add security regression test suite\r\n\r\nCo-Authored-By: "
+  },
+  {
+    "group": "agentic",
+    "repo": "django-bolt",
+    "msg": "(test): run integeration tests on prs too."
+  },
+  {
+    "group": "agentic",
+    "repo": "fqf",
+    "msg": "Minor css consistency changes\r\n\r\nUpdate Refresh button\r\nSunshine hack"
+  },
+  {
+    "group": "agentic",
+    "repo": "Hackathon-II_The-Evolution-of-Todo",
+    "msg": "Phase3/frontend (#10)\r\n\r\n* phase 3 frontend compelted\r\n\r\n* fixed build errors"
+  },
+  {
+    "group": "agentic",
+    "repo": "J.A.R.V.I.S",
+    "msg": "LinkedIn: Jarvis-intro DMs + fullauto-aware batch approval\r\n\r\nTwo changes that together remove the daily /lp_approve_all friction Boss\r\nflagged as \"irritating\" once fullauto was enabled (2026-05-14).\r\n\r\n1. scripts/linkedin/intro_messager.py — new module\r\n   Drafts the daily batch of \"Jarvis-intro\" DMs to 1st-degree connections\r\n   whose headline matches recruiter / talent-acquisition / founder /\r\n   eng-leader keywords. The DM template (English, ~3080 chars) introduces\r\n   Jarvis as Ujjawal's AI"
+  },
+  {
+    "group": "agentic",
+    "repo": "lazy-bird",
+    "msg": "fix: Fix Docker build and async DB health check\r\n\r\n- Dockerfile: copy source code before pip install to fix build failure\r\n- database.py: wrap raw SQL in text() for SQLAlchemy async compatibility\r\n- requirements.txt: add missing file required by Dockerfile (includes asyncpg)\r\n\r\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+  },
+  {
+    "group": "agentic",
+    "repo": "NewsCrawler",
+    "msg": "Add GitHub Sponsors FUNDING.yml"
+  },
+  {
+    "group": "agentic",
+    "repo": "openclaude",
+    "msg": "[fix] Rename Project"
+  },
+  {
+    "group": "agentic",
+    "repo": "ott-platform",
+    "msg": "Update speckit skills and add EPG re-seed instructions to README\r\n\r\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+  },
+  {
+    "group": "agentic",
+    "repo": "poc-machine-law",
+    "msg": "chore: pre-commit autoupdate (#396)\r\n\r\nupdates:\r\n- [github.com/astral-sh/ruff-pre-commit: v0.15.4 → v0.15.11](https://github.com/astral-sh/ruff-pre-commit/compare/v0.15.4...v0.15.11)\r\n\r\nCo-authored-by: pre-commit-ci[bot] <66853113+pre-commit-ci[bot]@users.noreply.github.com>\r\nCo-authored-by: Anne Schuth <anne.schuth@rijksoverheid.nl>"
+  },
+  {
+    "group": "agentic",
+    "repo": "tradinggame",
+    "msg": "📊 Update README with live performance tracking\r\n\r\nAdded comprehensive performance tracking:\r\n- Live portfolio status: $1,043.32 (+4.33%)\r\n- Current positions table with P&L\r\n- Monthly goal tracker (15% target)\r\n- Benchmark comparison (beating SPY by 4%)\r\n- Strategy updates and next targets\r\n\r\nCreated PERFORMANCE.md:\r\n- Detailed daily performance log\r\n- Position history and metrics\r\n- Price targets and stop losses\r\n- Path to $10,000 milestone tracker\r\n- Lessons learned section\r\n\r\nCurrent Status:"
+  },
+  {
+    "group": "agentic",
+    "repo": "zhang2025",
+    "msg": "Complete Zhang (2025) exact replication - Final version"
+  },
+  {
+    "group": "baseline",
+    "repo": "aiohttp",
+    "msg": "Combine build-tool update and dependency install into one CI step per job (#12643)"
+  },
+  {
+    "group": "baseline",
+    "repo": "celery",
+    "msg": "docs: fix duplicated word in changelog"
+  },
+  {
+    "group": "baseline",
+    "repo": "click",
+    "msg": "start version 8.5.0"
+  },
+  {
+    "group": "baseline",
+    "repo": "django",
+    "msg": "Fixed #36825 -- Extended admin templates so CSP nonce is included if available.\r\n\r\nError pages, admin, and registration templates were updated to use\r\n`{% csp_nonce %}` on their explicit `<script>`, `<link>`, and `<style>`\r\nHTML elements.\r\n\r\nCo-authored-by: Antoliny0919 <antoliny0919@gmail.com>\r\nCo-authored-by: Natalia <124304+nessita@users.noreply.github.com>"
+  },
+  {
+    "group": "baseline",
+    "repo": "fastapi",
+    "msg": "📝 Update release notes\r\n\r\n[skip ci]"
+  },
+  {
+    "group": "baseline",
+    "repo": "flask",
+    "msg": "update dev dependencies"
+  },
+  {
+    "group": "baseline",
+    "repo": "httpx",
+    "msg": "Adapt test_response_decode_text_using_autodetect for chardet 6.0 (#3773)"
+  },
+  {
+    "group": "baseline",
+    "repo": "numpy",
+    "msg": "Merge pull request #31466 from numpy/dependabot/github_actions/egor-tensin/cleanup-path-5.0.2\r\n\r\nMAINT: Bump egor-tensin/cleanup-path from 5.0.1 to 5.0.2"
+  },
+  {
+    "group": "baseline",
+    "repo": "pandas",
+    "msg": "DEPR: infer_freq/inferred_freq returning str instead of BaseOffset (#64679)\r\n\r\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
+  },
+  {
+    "group": "baseline",
+    "repo": "pydantic",
+    "msg": "Only deepcopy non-updated fields in `model_copy()` (#13087)\r\n\r\nCo-authored-by: Victorien <65306057+Viicos@users.noreply.github.com>"
+  },
+  {
+    "group": "baseline",
+    "repo": "pytest",
+    "msg": "[pre-commit.ci] pre-commit autoupdate (#14496)\r\n\r\nupdates:\r\n- [github.com/astral-sh/ruff-pre-commit: v0.15.12 → v0.15.13](https://github.com/astral-sh/ruff-pre-commit/compare/v0.15.12...v0.15.13)\r\n- [github.com/woodruffw/zizmor-pre-commit: v1.24.1 → v1.25.2](https://github.com/woodruffw/zizmor-pre-commit/compare/v1.24.1...v1.25.2)\r\n- [github.com/pre-commit/mirrors-mypy: v2.0.0 → v2.1.0](https://github.com/pre-commit/mirrors-mypy/compare/v2.0.0...v2.1.0)\r\n\r\nCo-authored-by: pre-commit-ci[bot] <668"
+  },
+  {
+    "group": "baseline",
+    "repo": "requests",
+    "msg": "docs: indent continuation line in Session.get :param params: (#7460)"
+  },
+  {
+    "group": "baseline",
+    "repo": "scrapy",
+    "msg": "Disable mypy allow_any_generics. (#7532)"
+  },
+  {
+    "group": "baseline",
+    "repo": "sqlalchemy",
+    "msg": "Merge \"Postgresql default to no backslash escaping\" into main"
+  },
+  {
+    "group": "baseline",
+    "repo": "tornado",
+    "msg": "Merge pull request #3620 from mokashang/docs/fix-typos-in-comments-and-docs\r\n\r\ndocs: fix typos in comments and documentation"
+  }
+]

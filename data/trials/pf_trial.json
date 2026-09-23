@@ -1,0 +1,434 @@
+[
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "docs: add CLAUDE-INVENTORY",
+    "regex": null,
+    "jev": 0.09,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Update README for v1.0.0 release",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Update README for v1.0.0 release",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Merge pull request #1 from chokmah-me/main",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Release v1.0.0",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Delete paper/longitudinal-draft.md",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Delete paper/draft.md",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Address peer review of longitudinal draft",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Fix Maillart in-text citations to match what the paper act",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Fix Maillart & Sornette reference in both papers",
+    "regex": null,
+    "jev": 0.98,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Address peer review: scope, mechanism, citations, confound",
+    "regex": null,
+    "jev": 0.04,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Tighten abstracts for Zenodo upload",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Fix README citation: correct author name, add longitudinal",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Add byline, ORCID, Hebrew epigraph and date to cross-secti",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Add byline, ORCID, Hebrew date and epigraph to longitudina",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Fix author name to Daniyel Yaacov Bilar; add longitudinal ",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Update README with longitudinal study section and results",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Add longitudinal companion paper results and fix walk_hist",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Fix repo count: 27 fitted (15+12), 37 cloned total",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Add README with current results (n=15 baseline, n=12 agent",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Add wave-2 agentic repos (n=8 new), update results to n=22",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "self",
+    "repo": "parabolic-fractal",
+    "subject": "Initial release: fan-in topology study, agentic vs baselin",
+    "regex": null,
+    "jev": 0.1,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "agentic-sprint",
+    "subject": "Update skills to Anthropic 2025 specification",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "camp2025-stock",
+    "subject": "chore(deps): bump next from 15.4.8 to 15.4.10 in /frontend",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "claude-cli-rest-api",
+    "subject": "Initial commit: Claude Code MCP REST API wrapper",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "codebase-mcp",
+    "subject": "Update README.md",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "dark-factory-experiment",
+    "subject": "feat: tool-aware continuous live tool-activity indicator (",
+    "regex": null,
+    "jev": 0.04,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "deepseek_ocr_app",
+    "subject": "Fix RCE vulnerability and harden security",
+    "regex": null,
+    "jev": 0.05,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "django-bolt",
+    "subject": "(test): run integeration tests on prs too.",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "fqf",
+    "subject": "Minor css consistency changes",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "Hackathon-II_The-Evolution-of-Todo",
+    "subject": "Phase3/frontend (#10)",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "J.A.R.V.I.S",
+    "subject": "LinkedIn: Jarvis-intro DMs + fullauto-aware batch approval",
+    "regex": null,
+    "jev": 0.04,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "lazy-bird",
+    "subject": "fix: Fix Docker build and async DB health check",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "NewsCrawler",
+    "subject": "Add GitHub Sponsors FUNDING.yml",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "openclaude",
+    "subject": "[fix] Rename Project",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "ott-platform",
+    "subject": "Update speckit skills and add EPG re-seed instructions to ",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "poc-machine-law",
+    "subject": "chore: pre-commit autoupdate (#396)",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "tradinggame",
+    "subject": "📊 Update README with live performance tracking",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "agentic",
+    "repo": "zhang2025",
+    "subject": "Complete Zhang (2025) exact replication - Final version",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "aiohttp",
+    "subject": "Combine build-tool update and dependency install into one ",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "celery",
+    "subject": "docs: fix duplicated word in changelog",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "click",
+    "subject": "start version 8.5.0",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "django",
+    "subject": "Fixed #36825 -- Extended admin templates so CSP nonce is i",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "fastapi",
+    "subject": "📝 Update release notes",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "flask",
+    "subject": "update dev dependencies",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "httpx",
+    "subject": "Adapt test_response_decode_text_using_autodetect for chard",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "numpy",
+    "subject": "Merge pull request #31466 from numpy/dependabot/github_act",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "pandas",
+    "subject": "DEPR: infer_freq/inferred_freq returning str instead of Ba",
+    "regex": null,
+    "jev": 0.99,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "pydantic",
+    "subject": "Only deepcopy non-updated fields in `model_copy()` (#13087",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "pytest",
+    "subject": "[pre-commit.ci] pre-commit autoupdate (#14496)",
+    "regex": null,
+    "jev": 0.03,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "requests",
+    "subject": "docs: indent continuation line in Session.get :param param",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "scrapy",
+    "subject": "Disable mypy allow_any_generics. (#7532)",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "sqlalchemy",
+    "subject": "Merge \"Postgresql default to no backslash escaping\" into m",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  },
+  {
+    "group": "baseline",
+    "repo": "tornado",
+    "subject": "Merge pull request #3620 from mokashang/docs/fix-typos-in-",
+    "regex": null,
+    "jev": 0.02,
+    "err": null
+  }
+]

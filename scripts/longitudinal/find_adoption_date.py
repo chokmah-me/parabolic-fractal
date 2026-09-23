@@ -1,11 +1,23 @@
 """
 find_adoption_date.py
 
-Detect the earliest date a repo adopted AI coding tools, using two signals:
-  1. Commit messages containing AI attribution patterns
+Detect the earliest date a repo shows DECLARED AI attribution, using two
+signals:
+  1. Commit messages containing AI attribution trailers/markers
+     (e.g. "Co-authored-by: ... noreply@anthropic.com")
   2. AI config files appearing in git history
 
-Returns ISO date string or None.
+This measures declared attribution, not actual tool adoption: a contributor
+using an AI coding tool without adding an attribution trailer is invisible to
+this detector. Silent (undeclared) adoption is out of scope for this project.
+A validation pass comparing this regex against a semantic LLM judge (Jev,
+typesafe/jev-1.13) over 1,275 sampled real commits found 0 disagreements
+(see data/trials/pf_hist_result.json) — i.e. no commit in that sample used AI
+tooling without also declaring it in the message. That result is evidence the
+regex is sufficient for the *declared* signal, not evidence that silent
+adoption doesn't happen elsewhere.
+
+Returns ISO date string (of first declared attribution) or None.
 
 Usage:
     python find_adoption_date.py --repo /path/to/repo
@@ -63,22 +75,38 @@ def _git(repo: Path, *args) -> str:
     return result.stdout.strip()
 
 
+_FIELD_SEP = "\x1f"
+_RECORD_SEP = "\x1e"
+
+
 def earliest_commit_signal(repo: Path, verbose: bool = False) -> datetime | None:
-    log = _git(repo, "log", "--all", "--format=%ai %s %b")
+    """Scan full commit messages (subject + body) for AI attribution signals.
+
+    Uses NUL-free field/record separators rather than naive whitespace
+    splitting, since a plain `%ai %s %b` + splitlines() approach only tests
+    each commit's first line against the regex — attribution trailers placed
+    later in a multi-line body (the normal position for `Co-authored-by:`
+    lines) were silently invisible to the old implementation.
+    """
+    fmt = f"%ai{_FIELD_SEP}%s{_FIELD_SEP}%b{_RECORD_SEP}"
+    log = _git(repo, "log", "--all", f"--format={fmt}")
     earliest = None
-    for line in log.splitlines():
-        parts = line.split(" ", 3)
-        if len(parts) < 4:
+    for record in log.split(_RECORD_SEP):
+        record = record.strip("\n")
+        if not record:
             continue
-        date_str = parts[0] + " " + parts[1] + " " + parts[2]
-        message = parts[3]
+        parts = record.split(_FIELD_SEP)
+        if len(parts) < 3:
+            continue
+        date_str, subject, body = parts[0], parts[1], parts[2]
+        message = subject + "\n" + body
         if _COMMIT_RE.search(message):
             try:
                 dt = datetime.fromisoformat(date_str)
                 if earliest is None or dt < earliest:
                     earliest = dt
                     if verbose:
-                        print(f"  [commit signal] {dt.date()}  {message[:80]}")
+                        print(f"  [commit signal] {dt.date()}  {subject[:80]}")
             except ValueError:
                 continue
     return earliest
@@ -106,6 +134,7 @@ def earliest_config_signal(repo: Path, verbose: bool = False) -> datetime | None
 
 
 def find_adoption_date(repo: Path, verbose: bool = False) -> str | None:
+    """Return the ISO date of the earliest declared-AI-attribution signal, or None."""
     commit_dt = earliest_commit_signal(repo, verbose)
     config_dt = earliest_config_signal(repo, verbose)
 
@@ -124,9 +153,9 @@ def main():
     repo = Path(args.repo)
     date = find_adoption_date(repo, args.verbose)
     if date:
-        print(f"Adoption date: {date}")
+        print(f"Declared attribution date: {date}")
     else:
-        print("No AI adoption signal found.")
+        print("No declared AI attribution signal found.")
 
 
 if __name__ == "__main__":

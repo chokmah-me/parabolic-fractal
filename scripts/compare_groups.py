@@ -61,17 +61,27 @@ def load(summary_path: Path) -> dict[str, list[dict]]:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--summary", default="../data/summary.csv")
+    parser.add_argument("--exclude-repos", default="",
+                         help="Comma-separated repo names to drop before comparing "
+                              "(e.g. repos flagged in data/contamination-baseline.csv)")
+    parser.add_argument("--out", default="",
+                         help="Optional path to also write results as CSV "
+                              "(metric,bl_mean,ag_mean,U,p,r,n_baseline,n_agentic,excluded_repos)")
     args = parser.parse_args()
 
     groups = load(Path(args.summary))
+    excluded = {r.strip() for r in args.exclude_repos.split(",") if r.strip()}
 
     if "baseline" not in groups:
         print("No baseline group in summary.csv"); return
     if "agentic" not in groups:
         print("No agentic group yet — populate AGENTIC_REPOS and re-run pipeline."); return
 
-    bl = groups["baseline"]
-    ag = groups["agentic"]
+    bl = [r for r in groups["baseline"] if r["repo"] not in excluded]
+    ag = [r for r in groups["agentic"] if r["repo"] not in excluded]
+    if excluded:
+        dropped = sorted(excluded)
+        print(f"Excluding {len(dropped)} repo(s): {', '.join(dropped)}\n")
 
     metrics = [
         ("gini",       "Gini coefficient"),
@@ -84,16 +94,34 @@ def main():
     print(f"{'Metric':<28} {'BL mean':>9} {'AG mean':>9} {'U':>8} {'p':>8} {'r':>6}")
     print("-" * 72)
 
+    out_rows = []
     for key, label in metrics:
         a = [float(r[key]) for r in bl]
         b = [float(r[key]) for r in ag]
         U, p, r = mannwhitney_u(a, b)
         sig = "**" if p < 0.01 else ("*" if p < 0.05 else "")
         print(f"{label:<28} {np.mean(a):>9.3f} {np.mean(b):>9.3f} {U:>8.1f} {p:>7.4f}{sig:1s} {r:>6.3f}")
+        out_rows.append({
+            "metric": key, "bl_mean": np.mean(a), "ag_mean": np.mean(b),
+            "U": U, "p": p, "r": r,
+            "n_baseline": len(bl), "n_agentic": len(ag),
+            "excluded_repos": ";".join(sorted(excluded)),
+        })
 
     bl_wins = sum(1 for r in bl if r["lognormal_wins"] == "True")
     ag_wins = sum(1 for r in ag if r["lognormal_wins"] == "True")
     print(f"\nLog-normal wins: baseline {bl_wins}/{len(bl)}, agentic {ag_wins}/{len(ag)}")
+
+    if args.out:
+        out_path = Path(args.out)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        fields = ["metric", "bl_mean", "ag_mean", "U", "p", "r",
+                  "n_baseline", "n_agentic", "excluded_repos"]
+        with open(out_path, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(out_rows)
+        print(f"\nWrote {out_path}")
 
 
 if __name__ == "__main__":

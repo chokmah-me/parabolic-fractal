@@ -1,0 +1,5 @@
+metric,bl_mean,ag_mean,U,p,r,n_baseline,n_agentic,excluded_repos
+gini,0.8798407572160295,0.7253576743776294,53.0,0.015333158766872135,-0.7666666666666666,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
+delta_aic,121.66460556532016,27.455837597581873,44.0,0.14001657145690305,-0.46666666666666656,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
+frac_leaves,0.6699491659773507,0.4953180826431465,45.0,0.11384630482411451,-0.5,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
+entropy_norm,0.7865251507577,0.8869236228578884,10.0,0.03501485655952297,0.6666666666666667,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
