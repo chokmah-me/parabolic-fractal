@@ -4,7 +4,25 @@
 
 by **Daniyel Yaacov Bilar**, Chokmah LLC, chokmah-dyb@pm.me , ORCID: [0000-0002-9040-6914](https://orcid.org/0000-0002-9040-6914)
 
-<p class="hebrew-date" dir="rtl" lang="he">ג׳ סִיוָן תשפ״ו</p>
+<p class="hebrew-date" dir="rtl" lang="he">י״ב תִּשְׁרֵי תשפ״ז</p>
+
+------
+
+## Version Note and Errata (v1.1)
+
+This is version 1.1 of the paper released as v1.0.0 (doi: 10.5281/zenodo.20318458). It corrects five errors in v1.0.0 and adds a post-release audit (Section 7.7) with two new figures. No conclusion changes. Every number below is recomputed by `python scripts/check_paper_claims.py`, which exits nonzero on any mismatch.
+
+**E1. Cohort A contains AI-attributed commits.** v1.0.0 described Cohort A as human-written without qualification. In the 15 snapshots measured in Section 4, 421 of 221,145 commits (0.19%) carry a declared AI attribution, in 9 repos; 386 of them are in pandas. In this paper "human-written" means a project founded and maintained by people before AI coding tools existed. With the nine affected repos removed, Cohort A Gini remains higher than Cohort B Gini (exact Mann-Whitney p=0.0097, n=6 vs. 12) with an unchanged effect size (r=-0.75). Section 7.7 gives the details.
+
+**E2. Celery adoption date.** v1.0.0 gives 2025-05-08. No Celery commit on that date carries an attribution marker; the earliest, 5c1a13c, is dated 2025-05-09. The released `find_adoption_date.py` returned neither date: its parser tested only the first line of each commit and fell back to the configuration-file date, 2025-08-26. The parser is fixed. Both dates fall in May 2025, so every monthly pre/post label and every Section 6 result is unchanged.
+
+**E3. aiohttp adoption date.** v1.0.0 cites a Claude co-authored aiohttp commit on 2026-05-04. No aiohttp commit on that date mentions Claude or Anthropic; the earliest attributed commit is edc1cc2, dated 2026-05-16. aiohttp stays excluded, with two days of post-adoption history at its snapshot instead of the 15 reported.
+
+**E4. Reference date for lags and Figure 5.** `detect_changepoint.py` measures change-point lags from the first monthly snapshot on or after the adoption date (Celery 2025-06-01, Django 2026-04-01), and `plot_timeline.py` draws the dashed line of Figure 5 at that snapshot. v1.0.0 labeled both as the adoption date. Four rows of Table 6.3 match the script. The two Django rows reported as -4 days were computed by hand from 2026-03-05; the script gives -31 days. v1.1 relabels the column and the caption and corrects the two rows. The reading of Section 6.3 does not change.
+
+**E5. Figures 2, 3, and 4 were stale.** They were rendered before the second wave of Cohort B repos was added and were not redrawn. Figure 2 showed loki-mode while its caption named borrowhood, and Figures 3 and 4 showed 8 Cohort B repos instead of the 12 the text reports. Redrawn from the released data with the released script, Figure 3 puts the Cohort B median at 0.728 instead of the plotted 0.747, and its lower whisker reaches 0.460 (codebase-mcp), so the gap between the groups is slightly larger than v1.0.0 showed. The caption of Figure 4 is rewritten to match the full data. The statistics in the text were computed from the full data in v1.0.0 and are unchanged.
+
+**C1. Wording.** "Adoption date" throughout means the date of the first declared AI attribution in commit messages or configuration files. AI tool use without such a marker cannot be detected from repository history and is outside the scope of this paper.
 
 ------
 
@@ -64,7 +82,7 @@ Given that (a) Constructal optimization under cognitive pressure produces log-no
 
 ### 3.1 Repository Selection
 
-**Cohort A (baseline, human-written):** 15 mature Python OSS projects, all with >5 years of development and >100 contributors: Django, Flask, NumPy, pandas, SQLAlchemy, Celery, FastAPI, requests, pytest, Scrapy, httpx, Pydantic, aiohttp, Tornado, Click. Note that FastAPI the *framework* (Cohort A) has rich internal coupling (Gini=0.981); FastAPI-based *applications* (several in Cohort B) inherit the framework's design philosophy of thin routers but not its internal structure.
+**Cohort A (baseline, human-written):** 15 mature Python OSS projects, all with >5 years of development and >100 contributors: Django, Flask, NumPy, pandas, SQLAlchemy, Celery, FastAPI, requests, pytest, Scrapy, httpx, Pydantic, aiohttp, Tornado, Click. Note that FastAPI the *framework* (Cohort A) has rich internal coupling (Gini=0.981); FastAPI-based *applications* (several in Cohort B) inherit the framework's design philosophy of thin routers but not its internal structure. Cohort A is defined at the project level; Section 7.7 reports how many commits in each measured snapshot carry a declared AI attribution.
 
 **Cohort B (agentic, AI-generated or AI-assisted):** 22 Python repositories created 2024-2026, each meeting at least one of: - CLAUDE.md or `.cursor/rules` present in root - Commit messages containing `Co-authored-by: Cursor cursoragent@cursor.com` or `noreply@anthropic.com` - README explicitly describes AI-assisted or AI-generated development
 
@@ -128,7 +146,7 @@ Mann-Whitney U (non-parametric, two-sided). Effect sizes as rank-biserial $r$.
 
 14 of 15 repos show log-normal fan-in. The exception is NumPy ($\Delta\text{AIC}=+1.5$, $z_{lr}=+1.11$): NumPy's Python layer is a thin wrapper over C extensions, compressing intra-Python coupling. The Gini mean of 0.882 matches prior benchmarks for mature package ecosystems (Decan et al. 2019), validating the method across scales.
 
-![Figure 1: Log-log rank-frequency plot for Django (baseline). The dashed line is the power-law fit; the solid curve is the log-normal (parabolic) fit. The downward curvature in log-log space is the visual signature of a log-normal distribution.](..\figures\fig1_baseline_rankfreq.png)
+![Figure 1: Log-log rank-frequency plot for Django (baseline). The dashed line is the power-law fit; the solid curve is the log-normal (parabolic) fit. The downward curvature in log-log space is the visual signature of a log-normal distribution.](../figures/v1.1/fig1_baseline_rankfreq.png)
 
 ### 4.2 Agentic Group (Cohort B)
 
@@ -169,7 +187,7 @@ Three repos (dark-factory-experiment with 92 files, ott-platform with 88 files, 
 
 11 of 12 show log-normal shape ($\Delta\text{AIC} > 2$). The exception is codebase-mcp ($\Delta\text{AIC}=+1.2$, $z_{lr}=+0.67$): a small FastAPI MCP server where the log-normal preference falls below both thresholds. poc-machine-law ($z_{lr}=+0.52$, p=0.60) meets the AIC threshold but not $$z_{lr}$$ significance.
 
-![Figure 2: Log-log rank-frequency plot for borrowhood (agentic). The parabolic curvature is attenuated compared to Figure 1: the log-normal fit still wins, but the gap between the two candidate shapes is smaller.](..\figures\fig2_agentic_rankfreq.png)
+![Figure 2: Log-log rank-frequency plot for borrowhood (agentic). The parabolic curvature is attenuated compared to Figure 1: the log-normal fit still wins, but the gap between the two candidate shapes is smaller.](../figures/v1.1/fig2_agentic_rankfreq.png)
 
 ### 4.3 Between-Group Comparison
 
@@ -184,9 +202,9 @@ With both cohorts characterized at the per-repo level, we now test whether the g
 
 Gini is significantly lower in the agentic group (large effect, r=-0.744). Entropy is significantly higher (more uniform distribution, r=+0.711). Log-normal signal strength (DAIC) is also significantly lower (r=-0.533). Fraction of leaf files is also significant (r=-0.556): agentic repos have proportionally fewer zero-fanin files. This likely reflects survivor bias, larger projects with some intermediate structure passed the fitting filter, rather than genuine architectural improvement; the three repos with Gini=0.000 are all excluded from this comparison.
 
-![Figure 3: Fan-in Gini coefficient by group. The agentic group (n=12 fitted repos) shows systematically lower concentration than the baseline group (n=15). Median and interquartile range are both lower.](..\figures/fig3_gini_boxplot.png)
+![Figure 3: Fan-in Gini coefficient by group. The agentic group (n=12 fitted repos) shows systematically lower concentration than the baseline group (n=15). Median and interquartile range are both lower.](../figures/v1.1/fig3_gini_boxplot.png)
 
-![Figure 4: Log-normal fit advantage (DAIC) vs. repo size. Agentic repos cluster near the DAIC=0 boundary (where power-law and log-normal fits are indistinguishable), while baseline repos spread across a wide range of positive DAIC values. The dashed line at DAIC=2 marks the conventional threshold.](..\figures/fig4_deltaaic_scatter.png)
+![Figure 4: Log-normal fit advantage (DAIC) vs. repo size. Half of the fitted agentic repos (6 of 12) have DAIC below 6, near the boundary where the power-law and log-normal fits are indistinguishable, and none exceeds 83; baseline DAIC spreads up to 308. Gray lines mark DAIC=0 (dashed) and the conventional threshold DAIC=2 (dotted).](../figures/v1.1/fig4_deltaaic_scatter.png)
 
 ### 4.4 FastAPI Sensitivity Analysis
 
@@ -202,11 +220,11 @@ The cross-sectional result cannot rule out a simpler explanation: that AI-genera
 
 ### 5.1 Repo Selection and Adoption Dates
 
-We scanned the 15 baseline repos for AI adoption signals. Three confirmed candidates yielded adoption dates:
+In this paper the adoption date of a repo is the date of its first declared AI attribution: a trailer such as `Co-authored-by: Copilot` in a commit message, or an AI configuration file such as `.github/copilot-instructions.md` appearing in the tree (`find_adoption_date.py`). We scanned the 15 baseline repos for these signals. Three candidates yielded dates:
 
-- **Celery**: first Copilot co-author commit 2025-05-08. Config file `.github/copilot-instructions.md` appeared 2025-08-26. Earliest signal: 2025-05-08.
+- **Celery**: first Copilot co-author commit 2025-05-09 (v1.0.0 gave 2025-05-08; see Errata E2). Config file `.github/copilot-instructions.md` appeared 2025-08-26. Earliest signal: 2025-05-09.
 - **Django**: `.github/copilot-instructions.md` added 2026-03-05. No commit-level AI attribution. Adoption date: 2026-03-05.
-- **aiohttp**: Claude Opus co-authored commit 2026-05-04; `CLAUDE.md` appeared 2026-05-17. Excluded: only 15 days of post-adoption data at collection time.
+- **aiohttp**: first Claude co-authored commit 2026-05-16 (v1.0.0 gave 2026-05-04; see Errata E3); `CLAUDE.md` appeared 2026-05-17. Excluded: two days of post-adoption data at its snapshot (2026-05-18).
 
 Inclusion criteria: Python primary language, created before 2023 (ensuring at least 24 months of pre-adoption history), full git history available, >50 Python files at adoption date, at least one unambiguous adoption signal. Both Celery and Django have full 24-month pre-adoption windows.
 
@@ -230,18 +248,18 @@ The last-6-months-pre and first-6-months-post Gini values are compared using a p
 
 | Repo   | Adoption   | Pre-Gini range | Post-Gini range | Last-6-pre | First-6-post | D       | Wilcoxon p |
 | ------ | ---------- | -------------- | --------------- | ---------- | ------------ | ------- | ---------- |
-| Celery | 2025-05-08 | 0.858-0.867    | 0.867-0.871     | 0.8664     | 0.8680       | +0.0016 | 0.031      |
+| Celery | 2025-05-09 | 0.858-0.867    | 0.867-0.871     | 0.8664     | 0.8680       | +0.0016 | 0.031      |
 | Django | 2026-03-05 | 0.932-0.933    | 0.933           | 0.9327     | 0.9332       | +0.0005 | n/a (n=2)  |
 
 Gini increased in both repos post-adoption, the direction opposite to the flattening hypothesis. The Celery increase is statistically significant but negligible in absolute terms (D=0.0016). The post-adoption Gini drift (+0.0016 over 12 months) is comparable to the pre-adoption drift (roughly +0.003/year over 2023-2025) and does not represent a directional change attributable to AI adoption. Django's two post-adoption snapshots provide no usable trend information; it is reported for completeness. This is effectively a single-repo pilot (Celery) with a second repo pending sufficient post-adoption history.
 
-**Celery trajectory detail.** Gini sat around 0.858-0.860 through 2023, drifting up to 0.866-0.867 by early 2025. Post-adoption (June 2025-May 2026), the drift continued to 0.871. A change-point detected at February 2024 (486 days before adoption) corresponds to a test infrastructure reorganization that added 40 files. Nothing in the trajectory ties to AI adoption.
+**Celery trajectory detail.** Gini sat around 0.858-0.860 through 2023, drifting up to 0.866-0.867 by early 2025. Post-adoption (June 2025-May 2026), the drift continued to 0.871. A change-point detected at February 2024 (486 days before the first post-adoption snapshot) corresponds to a test infrastructure reorganization that added 40 files. Nothing in the trajectory ties to AI adoption.
 
-![Figure 5: Celery structural topology over time. Three panels show Gini, z_lr, and DAIC from January 2023 through May 2026. The dashed vertical line marks the AI adoption date (2025-05-08). No metric shows a directional change at adoption; the PELT change-point in Gini (February 2024) precedes adoption by 486 days.](../figures/longitudinal/celery_timeline.png)
+![Figure 5: Celery structural topology over time. Three panels show Gini, z_lr, and DAIC from January 2023 through May 2026. The dashed vertical line marks the first monthly snapshot after the adoption date (snapshot 2025-06-01; adoption date 2025-05-09). No metric shows a directional change at adoption; the PELT change-point in Gini (February 2024) precedes that snapshot by 486 days.](../figures/longitudinal/celery_timeline.png)
 
 ### 6.2 Log-Normal Signal Strength
 
-In Celery, $$z_{lr}$$ and $$delta_{AIC}$$ both increased post-adoption. Change-point detection identified a step at March 2026 (+273 days post-adoption):
+In Celery, $$z_{lr}$$ and $$delta_{AIC}$$ both increased post-adoption. Change-point detection identified a step at March 2026 (+273 days after the first post-adoption snapshot):
 
 | Metric          | Pre-mean | Post-mean at CP | D     |
 | --------------- | -------- | --------------- | ----- |
@@ -252,18 +270,18 @@ The log-normal signal strengthened, not weakened. Django shows the same: $$z_{lr
 
 ### 6.3 Change-Point Summary
 
-We apply PELT (Killick et al. 2012) to each repo's Gini, $$delta_{AIC}$$, and $$z_{lr}$$ time series separately, recording the date of the most likely single change-point and its lag relative to the documented AI-adoption date. A negative lag indicates the structural shift preceded adoption; a positive lag indicates it followed.
+We apply PELT (Killick et al. 2012) to each repo's Gini, $$delta_{AIC}$$, and $$z_{lr}$$ time series separately, recording the date of the most likely single change-point and its lag relative to the first monthly snapshot on or after the adoption date (Celery 2025-06-01, Django 2026-04-01). A negative lag indicates the structural shift preceded that snapshot; a positive lag indicates it followed.
 
-| Repo   | Metric          | CP date    | Lag vs. adoption | Direction                      |
+| Repo   | Metric          | CP date    | Lag vs. first post snapshot | Direction                      |
 | ------ | --------------- | ---------- | ---------------- | ------------------------------ |
 | Celery | Gini            | 2024-02-01 | -486 days        | increase (pre-adoption event)  |
 | Celery | $$delta_{AIC}$$ | 2026-03-01 | +273 days        | STRENGTHENED                   |
 | Celery | $$z_{lr}$$      | 2026-03-01 | +273 days        | STRENGTHENED                   |
-| Django | Gini            | 2026-03-01 | -4 days          | increase (+0.0004, negligible) |
-| Django | $$delta_{AIC}$$ | 2026-03-01 | -4 days          | STRENGTHENED                   |
+| Django | Gini            | 2026-03-01 | -31 days         | increase (+0.0004, negligible) |
+| Django | $$delta_{AIC}$$ | 2026-03-01 | -31 days         | STRENGTHENED                   |
 | Django | $$z_{lr}$$      | 2025-10-01 | -182 days        | STRENGTHENED (pre-adoption)    |
 
-No detected change-point supports the flattening hypothesis. Note that Django's change-points at -4 days are within the monthly bin width and are effectively coincident with adoption, not precursive; the magnitude is negligible in all cases.
+No detected change-point supports the flattening hypothesis. Django's Gini and $$delta_{AIC}$$ change-points (2026-03-01) fall on the last snapshot before the 2026-03-05 adoption date, one monthly interval before the first post-adoption snapshot, so at this resolution they coincide with adoption. The magnitude is negligible in all cases. (v1.0.0 reported these two lags as -4 days, measured from the adoption date itself; see Errata E4.)
 
 ------
 
@@ -317,6 +335,24 @@ The longitudinal study uses N=2 repos (effectively N=1 with a full post-adoption
 
 The $$z_{lr}$$ statistic uses OLS residuals as proxy log-likelihoods, not the MLE-based Vuong (1989) test; see Section 3.3.
 
+### 7.7 Post-Release Audit (v1.1)
+
+Cohort A was selected at the project level: mature projects founded and maintained by people before AI coding tools existed. After release we checked the label at the commit level. `scripts/longitudinal/audit_contamination.py` applies the attribution regex of `find_adoption_date.py` to every commit reachable from each Cohort A snapshot, the commit whose fan-in Section 4 reports. Recomputing fan-in at the 15 snapshots reproduces the stored per-file results exactly, so these are the measured commits.
+
+Across the 15 snapshots, 421 of 221,145 commits (0.19%) carry a declared AI attribution, spread over 9 repos (Figure 6). The earliest is dated 2025-05-09, while the repos' first commits date from 2001 to 2019. Pandas holds 386 of the 421 (1.0% of its commits), 379 of them from one contributor. The other eight affected repos hold between 1 and 12 each, under 0.1% of their commits. Django, SQLAlchemy, Flask, Click, httpx, and Tornado have none. The history fetched for this audit in September 2026 contains 860 further attributed commits, including all 33 in Tornado. They postdate the snapshots and enter no result in this paper. The per-commit list is `data/attributed-commits-baseline.csv`.
+
+![Figure 6: Declared AI-attributed commits in Cohort A. Left: each repo's history from its first commit to September 2026; the shaded band is the interval shown at right. Right: January 2025 to September 2026. Red ticks are attributed commits inside the snapshot measured in Section 4 (black bar); gray ticks came after the snapshot and enter no result. Numbers at right: attributed commits and all commits at the snapshot. Repos are ordered by first commit.](../figures/v1.1/fig6_attribution_timeline.png)
+
+Two checks address whether these commits bear on the cross-sectional comparison. First, the affected repos do not sit toward the Cohort B end of the Gini scale (Figure 7). Their median Gini is 0.906, against 0.855 for the six unaffected repos and 0.728 for Cohort B. Second, removing the nine affected repos leaves six Cohort A repos. Against the 12 fitted Cohort B repos, the exact two-sided Mann-Whitney test gives p=0.0097 for Gini and p=0.024 for normalized entropy, while DAIC (p=0.12) and leaf fraction (p=0.083) lose significance. The rank-biserial effect sizes stay within 0.07 of their full-sample values: Gini r=-0.75 against -0.74 with all 15 repos, DAIC -0.47 against -0.53, leaf fraction -0.53 against -0.56, entropy +0.67 against +0.71. The p-values rise because the sample is smaller. Results are in `data/compare_groups_excl_contaminated.csv`; `compare_groups.py` uses the normal approximation, which gives p=0.011, 0.11, 0.075, and 0.025 for the same four metrics.
+
+![Figure 7: Fan-in Gini for each fitted repo, sorted. Filled blue: Cohort A repos with no attributed commit at the snapshot (n=6). Open blue: Cohort A repos with at least one, count in parentheses (n=9). Red: Cohort B (n=12). Requests (0.66, one attributed commit) is the Cohort A low outlier already visible in Figure 3.](../figures/v1.1/fig7_gini_by_repo.png)
+
+The cross-sectional comparison (research question 1) and the longitudinal pilot (research question 2) answer different questions, and neither substitutes for the other. The longitudinal design compares each repo with its own history before its adoption date, so attributed commits in other repos do not enter it; its limits are those stated in Section 7.6.
+
+`find_adoption_date.py` as released in v1.0.0 read `git log` output line by line and tested only the first line of each commit against the regex, so it missed attribution trailers in commit bodies. Run on Celery's full history it returns 2025-08-26, the configuration-file date. Neither that value nor the 2025-05-08 printed in v1.0.0 matches the earliest attributed commit, 2025-05-09. v1.1 reads whole commit messages. Adoption dates enter the analysis through the monthly pre/post labels and the start month of the pre-adoption window; 2025-05-08 and 2025-05-09 give identical values for both, so no Section 6 result changes.
+
+The detector measures declared attribution only. An AI tool used without a trailer or configuration file leaves nothing for it to find, and the same holds for any method that reads commit messages. To test whether a semantic reading of the messages finds attribution the regex misses, we scored 1,275 commits (1,028 from Cohort A, 247 from Cohort B) with an LLM classifier (Jev, `typesafe/jev-1.13`). The regex and the classifier flagged the same 116 commits, and no classifier score fell between 0.5 and 0.9. We therefore use the regex alone. Raw scores are in `data/trials/`.
+
 ------
 
 ## 8. Conclusion
@@ -326,6 +362,12 @@ We measured import fan-in distributions across 15 mature human-written and 22 AI
 The longitudinal pilot finds no Gini decline in mature repos following AI adoption on a 12-month horizon (Celery Gini +0.0016, Django +0.0005). With N=1 effective repo and no matched control, the pilot is insufficient to adjudicate between a structural-genesis hypothesis (flattening confined to new-project construction) and a null AI-adoption effect on mature codebases. We report it as preliminary methodology, not validation.
 
 Fan-in Gini is a cheap, CI-friendly structural health metric. A project with Gini below 0.75 and weak log-normal signal is structurally flat. For monitoring established repos over time, $$z_{lr}$$ and $$delta_{AIC}$$ are faster-moving and more sensitive to changes in the middle of the distribution where the constructal hierarchy lives.
+
+## AI Utilization Statement
+
+This work was produced with AI assistance. For v1.0.0 the author used Claude Sonnet 4.6 for code generation and drafting. For v1.1 the author used Claude Sonnet 5 and Claude Opus 5.5 (in Claude Code) for the post-release audit scripts, the figures, and drafting the Version Note and Section 7.7, and the Jev classifier (`typesafe/jev-1.13`) to score commit messages in the validation sample. [AUTHOR: confirm this list and add the model that ran the Jev trial.] All substantive claims, analytical decisions, and final editorial judgments were made by the author. AI-generated content was reviewed and corrected by the author before inclusion. No AI system is listed as a co-author.
+
+Affiliation: Chokmah LLC, Norwich, VT. Contact: chokmah-dyb@pm.me.
 
 ------
 

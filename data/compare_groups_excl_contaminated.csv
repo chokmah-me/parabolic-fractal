@@ -1,5 +1,5 @@
 metric,bl_mean,ag_mean,U,p,r,n_baseline,n_agentic,excluded_repos
-gini,0.8798407572160295,0.7253576743776294,53.0,0.015333158766872135,-0.7666666666666666,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
-delta_aic,121.66460556532016,27.455837597581873,44.0,0.14001657145690305,-0.46666666666666656,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
-frac_leaves,0.6699491659773507,0.4953180826431465,45.0,0.11384630482411451,-0.5,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
-entropy_norm,0.7865251507577,0.8869236228578884,10.0,0.03501485655952297,0.6666666666666667,5,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy;tornado
+gini,0.8739338255623829,0.7253576743776294,63.0,0.011445960390298326,-0.75,6,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy
+delta_aic,109.94655777631408,27.455837597581873,53.0,0.11134069886944498,-0.4722222222222223,6,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy
+frac_leaves,0.6673252395605648,0.4953180826431465,55.0,0.07515558925224397,-0.5277777777777777,6,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy
+entropy_norm,0.7977625981707499,0.8869236228578884,12.0,0.02458848707652339,0.6666666666666667,6,12,aiohttp;celery;fastapi;numpy;pandas;pydantic;pytest;requests;scrapy

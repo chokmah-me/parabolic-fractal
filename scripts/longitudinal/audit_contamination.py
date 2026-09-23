@@ -2,9 +2,11 @@
 audit_contamination.py
 
 T1/T4 from the corpus-validity brief (2026-09-22):
-  - T1: scan the FULL history of every baseline repo for declared-AI-attribution
-    commits (same regex as find_adoption_date.py's _COMMIT_RE), unshallowing
-    first if needed. Writes data/contamination-baseline.csv.
+  - T1: scan every baseline repo for declared-AI-attribution commits (same
+    regex as find_adoption_date.py's _COMMIT_RE), unshallowing first if needed,
+    in two scopes: commits reachable from local HEAD (the snapshot the
+    cross-sectional fan-in was measured on) and commits on all refs (history
+    up to the fetch date). Writes data/contamination-baseline.csv.
   - T4: for every repo in both baseline and agentic, record remote URL, commit
     count, shallow status, first-commit date, and attributed-commit count.
     Writes data/repos/provenance.csv.
@@ -63,38 +65,41 @@ def remote_url(repo: Path) -> str:
     return result.stdout.strip() or "UNKNOWN"
 
 
-def scan_commits(repo: Path) -> tuple[int, int, str | None, str, str]:
-    """Return (commits_scanned, attributed_commits, first_attributed_date, sample_sha, sample_subject)."""
-    fmt = f"%H{FIELD_SEP}%ai{FIELD_SEP}%s{FIELD_SEP}%b{RECORD_SEP}"
-    result = _git(repo, "log", "--all", f"--format={fmt}")
-    raw = result.stdout
-    if not raw:
-        return 0, 0, None, "", ""
-
+def attributed_commits(repo: Path, rev: str) -> tuple[int, list[dict]]:
+    """Return (commits_scanned, attributed) for commits reachable from rev ("--all" or a ref)."""
+    fmt = f"%H{FIELD_SEP}%ai{FIELD_SEP}%an{FIELD_SEP}%s{FIELD_SEP}%b{RECORD_SEP}"
+    raw = _git(repo, "log", rev, f"--format={fmt}").stdout
     scanned = 0
-    attributed = 0
-    first_date = None
-    sample_sha = ""
-    sample_subject = ""
-
+    hits = []
     for record in raw.split(RECORD_SEP):
         record = record.strip("\n")
         if not record:
             continue
         parts = record.split(FIELD_SEP)
-        if len(parts) < 4:
+        if len(parts) < 5:
             continue
-        sha, date_str, subject, body = parts[0], parts[1], parts[2], parts[3]
+        sha, date_str, author, subject, body = parts[:5]
         scanned += 1
-        haystack = subject + "\n" + body
-        if _COMMIT_RE.search(haystack):
-            attributed += 1
-            if first_date is None or date_str < first_date:
-                first_date = date_str
-                sample_sha = sha
-                sample_subject = subject
+        if _COMMIT_RE.search(subject + "\n" + body):
+            hits.append({"sha": sha, "date": date_str, "author": author, "subject": subject})
+    return scanned, hits
 
-    return scanned, attributed, first_date, sample_sha, sample_subject
+
+def summarize(scanned: int, hits: list[dict], prefix: str) -> dict:
+    first = min(hits, key=lambda h: h["date"]) if hits else None
+    authors: dict[str, int] = {}
+    for h in hits:
+        authors[h["author"]] = authors.get(h["author"], 0) + 1
+    top = max(authors.items(), key=lambda kv: kv[1]) if authors else ("", 0)
+    return {
+        f"commits_{prefix}": scanned,
+        f"attributed_{prefix}": len(hits),
+        f"first_attributed_{prefix}": first["date"] if first else "",
+        f"first_sha_{prefix}": first["sha"] if first else "",
+        f"first_subject_{prefix}": first["subject"] if first else "",
+        f"top_author_{prefix}": top[0],
+        f"top_author_count_{prefix}": top[1],
+    }
 
 
 def commit_count(repo: Path) -> int:
@@ -106,48 +111,61 @@ def commit_count(repo: Path) -> int:
 
 
 def first_commit_date(repo: Path) -> str:
-    result = _git(repo, "log", "--all", "--reverse", "--format=%ai", "-1")
-    return result.stdout.strip().split(" ")[0] if result.stdout.strip() else ""
+    roots = _git(repo, "rev-list", "--max-parents=0", "--all").stdout.split()
+    dates = [_git(repo, "log", "-1", "--format=%ad", "--date=short", r).stdout.strip() for r in roots]
+    dates = [d for d in dates if d]
+    return min(dates) if dates else ""
 
 
 def process_repo(repo: Path, skip_fetch: bool) -> dict:
-    shallow_before = is_shallow(repo)
-    fetch_ok, fetch_msg = (True, "skipped") if skip_fetch else fetch_unshallow(repo)
-
     if not repo.exists():
-        return {
-            "repo": repo.name, "error": "MISSING_CLONE",
-            "commits_scanned": -1, "attributed_commits": -1,
-            "first_attributed_date": "", "sample_sha": "", "sample_subject": f"MISSING: {repo}",
-            "remote_url": "", "commits": -1, "shallow": True, "first_commit_date": "",
-        }
+        return {"repo": repo.name, "error": f"MISSING_CLONE: {repo}", "commits": -1, "shallow": True}
 
-    if not fetch_ok:
-        scanned, attributed, first_dt, sha, subj = scan_commits(repo)
-        error_note = f"FETCH_FAILED: {fetch_msg}"
-    else:
-        scanned, attributed, first_dt, sha, subj = scan_commits(repo)
-        error_note = ""
+    fetch_ok, fetch_msg = (True, "skipped") if skip_fetch else fetch_unshallow(repo)
+    # Local HEAD is the commit the cross-sectional fan-in was computed on;
+    # --unshallow --all moves only remote refs, never HEAD.
+    snap_sha = _git(repo, "rev-parse", "HEAD").stdout.strip()
+    snap_date = _git(repo, "log", "-1", "--format=%ad", "--date=short", "HEAD").stdout.strip()
 
-    return {
+    row = {
         "repo": repo.name,
-        "error": error_note,
-        "commits_scanned": scanned,
-        "attributed_commits": attributed,
-        "first_attributed_date": first_dt or "",
-        "sample_sha": sha,
-        "sample_subject": (error_note + " | " + subj) if error_note and subj else (error_note or subj),
+        "error": "" if fetch_ok else f"FETCH_FAILED: {fetch_msg}",
+        "snapshot_sha": snap_sha,
+        "snapshot_date": snap_date,
         "remote_url": remote_url(repo),
         "commits": commit_count(repo),
         "shallow": is_shallow(repo),
         "first_commit_date": first_commit_date(repo),
     }
+    if row["commits"] < 0 and not row["error"]:
+        row["error"] = "UNREADABLE_HISTORY"
+    row["last_commit_date"] = _git(repo, "log", "--all", "-1", "--format=%ad", "--date=short").stdout.strip()
+    n_snap, snap_hits = attributed_commits(repo, "HEAD")
+    n_all, all_hits = attributed_commits(repo, "--all")
+    row.update(summarize(n_snap, snap_hits, "at_snapshot"))
+    row.update(summarize(n_all, all_hits, "all_refs"))
+    snap_shas = {h["sha"] for h in snap_hits}
+    row["_hits"] = [{"repo": repo.name, **h, "at_snapshot": h["sha"] in snap_shas} for h in all_hits]
+    return row
+
+
+def write_hits_csv(rows: list[dict], out_path: Path) -> None:
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fields = ["repo", "sha", "date", "author", "at_snapshot", "subject"]
+    with open(out_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            writer.writerows(sorted(row.get("_hits", []), key=lambda h: h["date"]))
 
 
 def write_contamination_csv(rows: list[dict], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    fields = ["repo", "commits_scanned", "attributed_commits",
-              "first_attributed_date", "sample_sha", "sample_subject"]
+    fields = ["repo", "error", "snapshot_sha", "snapshot_date"]
+    for scope in ("at_snapshot", "all_refs"):
+        fields += [f"commits_{scope}", f"attributed_{scope}", f"first_attributed_{scope}",
+                   f"first_sha_{scope}", f"first_subject_{scope}",
+                   f"top_author_{scope}", f"top_author_count_{scope}"]
     with open(out_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         writer.writeheader()
@@ -157,8 +175,9 @@ def write_contamination_csv(rows: list[dict], out_path: Path) -> None:
 
 def write_provenance_csv(rows: list[dict], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    fields = ["repo", "group", "remote_url", "commits", "shallow",
-              "first_commit_date", "attributed_commits"]
+    fields = ["repo", "group", "error", "remote_url", "commits", "shallow",
+              "first_commit_date", "snapshot_date", "last_commit_date",
+              "attributed_at_snapshot", "attributed_all_refs"]
     with open(out_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         writer.writeheader()
@@ -201,10 +220,14 @@ def main():
 
     write_contamination_csv(contamination_rows, Path(args.contamination_out))
     write_provenance_csv(provenance_rows, Path(args.provenance_out))
+    write_hits_csv(contamination_rows, Path(args.contamination_out).with_name("attributed-commits-baseline.csv"))
 
-    n_attributed = sum(1 for r in contamination_rows if r["attributed_commits"] > 0)
-    print(f"\nWrote {args.contamination_out} ({len(contamination_rows)} baseline repos, "
-          f"{n_attributed} with >=1 attributed commit)")
+    for scope in ("at_snapshot", "all_refs"):
+        hit = sum(1 for r in contamination_rows if r.get(f"attributed_{scope}", 0) > 0)
+        tot = sum(r.get(f"attributed_{scope}", 0) for r in contamination_rows)
+        n = sum(r.get(f"commits_{scope}", 0) for r in contamination_rows)
+        print(f"{scope}: {tot} attributed / {n} commits, {hit} of {len(contamination_rows)} repos")
+    print(f"Wrote {args.contamination_out}")
     print(f"Wrote {args.provenance_out} ({len(provenance_rows)} repos total)")
 
 

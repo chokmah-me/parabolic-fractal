@@ -35,7 +35,7 @@ the measurement threshold, not in it.
 
 ## Longitudinal study
 
-**Companion paper:** `paper/dyb-2026q-AI-Python-constructal-v1-REL.md`
+**Companion paper:** `paper/dyb-2026q-AI-Python-constructal-v1.1-REL.md` (v1.0.0 kept as `-v1-REL`)
 
 The cross-sectional design cannot rule out that AI repos and human repos differ on
 confounds (age, size, contributors). The longitudinal study tracks the same repos
@@ -61,65 +61,49 @@ intact. The structural risk of AI coding is concentrated at project inception.
 
 ---
 
-## Data validity: declared-attribution audit (2026-09-22)
+## Data validity: post-release audit (paper v1.1)
 
-The baseline repos were chosen as projects founded and maintained by people before
-AI coding tools existed. That does not make every commit in them free of AI help.
-A scan of the full history of all 15, using the regex from `find_adoption_date.py`
-(`python scripts/longitudinal/audit_contamination.py`), finds 1,281 commits with a
-declared AI attribution out of 226,849 scanned (0.56%), all dated 2025-04-11 or
-later:
+Version 1.1 of the paper (`paper/dyb-2026q-AI-Python-constructal-v1.1-REL.md`)
+opens with a Version Note listing five corrections to v1.0.0 and adds Section 7.7.
+No conclusion changes. `python scripts/check_paper_claims.py` recomputes every number
+cited there and exits nonzero on any mismatch.
 
-| Repo | Commits scanned | Attributed commits |
-|------|----------------:|--------------------:|
-| pandas | 39,081 | 1,067 |
-| pytest | 17,781 | 132 |
-| tornado | 5,133 | 33 |
-| numpy | 42,167 | 24 |
-| pydantic | 5,746 | 4 |
-| scrapy | 11,511 | 5 |
-| celery | 13,332 | 9 |
-| fastapi | 7,713 | 3 |
-| aiohttp | 14,164 | 3 |
-| requests | 6,495 | 1 |
-| django, flask, httpx, click, sqlalchemy | (full history) | 0 |
+**Cohort A contains a few AI-attributed commits.** The baseline repos were chosen as
+projects founded and maintained by people before AI coding tools existed. Scanning
+every commit in the 15 snapshots whose fan-in the paper measures finds 421 of
+221,145 (0.19%) with a declared AI attribution, in 9 repos:
 
-The counts are concentrated in a few contributors: 1,033 of the 1,067 in pandas come
-from one person, and all 33 in Tornado are authored under the name "Claude". None
-are Dependabot bumps or backport copies. Per-repo counts:
-`data/contamination-baseline.csv`. Clone provenance for all 37 repos (remote URL,
-commit count, shallow status): `data/repos/provenance.csv`.
+| Repo | Attributed / commits at snapshot |
+|------|---------------------------------:|
+| pandas | 386 / 38,026 |
+| numpy | 12 / 41,216 |
+| pytest | 9 / 17,342 |
+| celery | 8 / 13,092 |
+| fastapi | 2 / 7,156 |
+| aiohttp, pydantic, requests, scrapy | 1 each |
+| django, sqlalchemy, flask, click, httpx, tornado | 0 |
 
-**Consequence for the analysis.** The cross-sectional baseline-vs-agentic
-comparison is now reported as secondary evidence. The within-repo longitudinal
-design (Celery, Django) is primary: it compares each repo with its own history
-before its declared-attribution date, so attributed commits elsewhere in the corpus
-do not enter it. With the 10 affected repos excluded (n=5 baseline,
-`data/compare_groups_excl_contaminated.csv`), baseline Gini stays higher than
-agentic Gini (p=0.015) and normalized entropy stays lower (p=0.035). The delta-AIC
-and leaf-fraction differences lose significance at n=5 (p=0.14 and p=0.11). The
-full 15-repo result is in `data/compare_groups_with_contaminated.csv`.
+379 of the pandas commits come from one contributor. History fetched later, up to
+September 2026, adds 860 more (including 33 in Tornado); those postdate the
+snapshots and enter no result. The affected repos have a higher median Gini (0.906)
+than the unaffected ones (0.855), and removing them leaves Cohort A Gini above
+Cohort B Gini (exact Mann-Whitney p=0.0097, n=6 vs. 12) with the same effect size.
+Data: `data/contamination-baseline.csv`, `data/attributed-commits-baseline.csv`,
+`data/compare_groups_excl_contaminated.csv`; figures in `figures/v1.1/`.
 
-**Date corrections.** v1.0.0 of the paper gave Celery's date as 2025-05-08. No
-Celery commit on that date carries an attribution marker; the earliest is 5c1a13c,
-2025-05-09. The v1.0.0 script could not reproduce either date: its commit parser
-tested only the first line of each log entry, so it missed `Co-authored-by:`
-trailers in commit bodies and returned the config-file date 2025-08-26. The parser
-now reads whole messages. Both 2025-05-08 and 2025-05-09 fall between the
-2025-05-01 and 2025-06-01 monthly snapshots, so no pre/post label and no computed
-longitudinal result changes. v1.0.0 also cited an aiohttp commit on 2026-05-04; no
-aiohttp commit on that date mentions Claude or Anthropic, and the earliest
-attributed one is 2026-05-16. aiohttp was excluded from the longitudinal study in
-v1.0.0 and remains excluded.
+**Other corrections in v1.1.** Celery's adoption date is 2025-05-09, not 2025-05-08;
+the v1.0.0 date parser missed trailers in commit bodies and is fixed. No aiohttp
+commit on 2026-05-04, the date v1.0.0 cites, mentions Claude; the first attributed
+commit is 2026-05-16. Change-point
+lags are measured from the first post-adoption monthly snapshot, which fixes two
+Django rows (-31 days, not -4). Figures 2 to 4 of v1.0.0 predated the second wave of
+agentic repos and are redrawn.
 
-**What the detector measures.** `find_adoption_date.py` finds *declared* AI
-attribution: a literal trailer in a commit message or an AI config file in the
-tree. In a sample of 1,275 commits (1,028 baseline, 247 agentic), the regex and an
-LLM classifier reading the same messages (Jev, `typesafe/jev-1.13`) flagged the same
-116 commits (raw data in `data/trials/`). So the classifier found no attribution
-signal in the messages that the regex missed, and the regex alone is used. Neither
-detector can see AI tool use that leaves no trace in the message; that is out of
-scope for this project.
+**What the detector measures.** An adoption date here is the date of the first
+*declared* AI attribution: a commit trailer or an AI config file. AI use that leaves
+no such marker cannot be detected from repository history. On 1,275 sampled commits
+an LLM classifier reading the same messages (Jev, `typesafe/jev-1.13`) flagged the
+same 116 as the regex (`data/trials/`), so the regex is used alone.
 
 ---
 
@@ -131,13 +115,15 @@ scripts/
   compute_fanin.py          compute intra-repo import fan-in per file
   fit_distributions.py      fit log-normal vs power-law, compute Gini/entropy
   compare_groups.py         Mann-Whitney U between groups
+  plot_contamination.py     v1.1 Figures 6 and 7 (post-release audit)
+  check_paper_claims.py     executable gate for every number in paper v1.1 errata and 7.7
   longitudinal/
     find_adoption_date.py   detect declared-AI-attribution date from git history
     walk_history.py         monthly snapshots pre/post declared attribution
     aggregate_timeline.py   compile snapshots into timeline CSV
     detect_changepoint.py   PELT change-point detection on metric time series
     plot_timeline.py        per-repo and aggregate timeline figures
-    audit_contamination.py  full-history contamination + provenance audit
+    audit_contamination.py  attributed-commit audit (at snapshot and all refs) + provenance
 
 data/
   repos/baseline/           cloned human-written repos
@@ -146,18 +132,21 @@ data/
   results/baseline/         per-repo fan-in JSON
   results/agentic/          per-repo fan-in JSON
   summary.csv               all metrics, one row per repo
-  contamination-baseline.csv  full-history AI-attribution scan of baseline repos
+  contamination-baseline.csv  attributed-commit counts per baseline repo, two scopes
+  attributed-commits-baseline.csv  every attributed commit, flagged if in the snapshot
   compare_groups_with_contaminated.csv  Mann-Whitney, all 15 baseline repos
-  compare_groups_excl_contaminated.csv  Mann-Whitney, 10 contaminated repos excluded
+  compare_groups_excl_contaminated.csv  Mann-Whitney, 9 repos with attributed commits excluded
   trials/                   regex-vs-Jev validation raw data (see "Data validity")
   longitudinal/             snapshot JSONs and timeline CSVs (gitignored)
 
 paper/
-  dyb-2026q-AI-Python-constructal-v1-REL.md   release paper (cross-sectional + longitudinal pilot)
+  dyb-2026q-AI-Python-constructal-v1-REL.md   v1.0.0 release paper, unchanged
+  dyb-2026q-AI-Python-constructal-v1.1-REL.md v1.1: errata + post-release audit (Section 7.7)
   dyb-2026q-AI-Python-constructal-v1-REL.pdf   PDF version
 
 figures/
-  fig[1-4]_*.png            cross-sectional figures
+  fig[1-4]_*.png            cross-sectional figures as published in v1.0.0
+  v1.1/                     all figures for paper v1.1 (Figs 1-4 redrawn, new Figs 6-7)
   longitudinal/             per-repo and aggregate timeline plots
 ```
 
@@ -212,16 +201,22 @@ python scripts/longitudinal/plot_timeline.py \
 ### Data-validity audit (baseline contamination)
 
 ```bash
-# scan all baseline + agentic repos for declared AI attribution across full history
+# count declared-AI-attributed commits at each snapshot (HEAD) and on all refs
 python scripts/longitudinal/audit_contamination.py
-#   -> data/contamination-baseline.csv, data/repos/provenance.csv
+#   -> data/contamination-baseline.csv, data/attributed-commits-baseline.csv,
+#      data/repos/provenance.csv
 
 # compare groups with vs. without contaminated baseline repos
 python scripts/compare_groups.py --summary data/summary.csv \
     --out data/compare_groups_with_contaminated.csv
 python scripts/compare_groups.py --summary data/summary.csv \
-    --exclude-repos aiohttp,celery,fastapi,numpy,pandas,pydantic,pytest,requests,scrapy,tornado \
+    --exclude-repos aiohttp,celery,fastapi,numpy,pandas,pydantic,pytest,requests,scrapy \
     --out data/compare_groups_excl_contaminated.csv
+
+# figures for paper v1.1, then the claims gate (exit 0 = every cited number verified)
+python scripts/visualize.py --results-dir data/results --summary data/summary.csv --out-dir figures/v1.1
+python scripts/plot_contamination.py
+python scripts/check_paper_claims.py
 ```
 
 ---
