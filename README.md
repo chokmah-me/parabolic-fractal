@@ -41,12 +41,12 @@ The cross-sectional design cannot rule out that AI repos and human repos differ 
 confounds (age, size, contributors). The longitudinal study tracks the same repos
 before and after documented AI adoption to remove those confounds.
 
-**Repos studied:** Celery (declared attribution 2025-05-09, corrected from 2025-05-08
-after a parser bug fix — see "Data validity" below; 37 monthly snapshots: 25 pre + 12
-post) and Django (declared attribution 2026-03-05, 27 snapshots: 25 pre + 2
-post). Dates are detected automatically from commit-level AI attribution trailers and
-AI config file appearance, then verified manually. This measures *declared*
-attribution, not tool adoption itself — see "Data validity" below.
+**Repos studied:** Celery (declared attribution 2025-05-09; v1.0.0 of the paper
+gave 2025-05-08, which no commit supports, see "Data validity" below; 37 monthly
+snapshots: 25 pre + 12 post) and Django (declared attribution 2026-03-05, 27
+snapshots: 25 pre + 2 post). Dates come from AI attribution trailers in commit
+messages and from AI config files appearing in history. They mark *declared*
+attribution. Tool use without a declared marker is invisible to this method.
 
 **Finding:** The agentic flattening hypothesis is rejected for mature repos. In
 Celery, Gini increased post-adoption (last-6-pre mean 0.8664, first-6-post mean
@@ -63,11 +63,12 @@ intact. The structural risk of AI coding is concentrated at project inception.
 
 ## Data validity: declared-attribution audit (2026-09-22)
 
-A post-release audit found that the baseline group is **not commit-level pure
-human-written**, even though every baseline repo predates its cloned snapshot and
-was selected as a mainstream human-maintained OSS project. Full history was scanned
-with the same regex `find_adoption_date.py` uses (see `scripts/longitudinal/
-audit_contamination.py`, run: `python scripts/longitudinal/audit_contamination.py`):
+The baseline repos were chosen as projects founded and maintained by people before
+AI coding tools existed. That does not make every commit in them free of AI help.
+A scan of the full history of all 15, using the regex from `find_adoption_date.py`
+(`python scripts/longitudinal/audit_contamination.py`), finds 1,281 commits with a
+declared AI attribution out of 226,849 scanned (0.56%), all dated 2025-04-11 or
+later:
 
 | Repo | Commits scanned | Attributed commits |
 |------|----------------:|--------------------:|
@@ -83,48 +84,42 @@ audit_contamination.py`, run: `python scripts/longitudinal/audit_contamination.p
 | requests | 6,495 | 1 |
 | django, flask, httpx, click, sqlalchemy | (full history) | 0 |
 
-10 of 15 baseline repos contain at least one commit with a declared AI-attribution
-trailer (e.g. `Co-authored-by: Claude Opus 4.5 <noreply@anthropic.com>`). Full data:
-`data/contamination-baseline.csv`; per-repo clone provenance (all 37 repos, remote
-URL, commit count, shallow status): `data/repos/provenance.csv`.
+The counts are concentrated in a few contributors: 1,033 of the 1,067 in pandas come
+from one person, and all 33 in Tornado are authored under the name "Claude". None
+are Dependabot bumps or backport copies. Per-repo counts:
+`data/contamination-baseline.csv`. Clone provenance for all 37 repos (remote URL,
+commit count, shallow status): `data/repos/provenance.csv`.
 
-**What this does and doesn't mean.** A repo-level "baseline = human-written" split
-does not imply commit-level purity — a handful of AI-assisted commits landing in an
-otherwise human-maintained, decades-old project does not make that project
-"agentic" by the same criteria used to build the agentic cohort (which requires
-functional applications *built* by AI agents from inception). The cross-sectional
-comparison above should be read as a secondary, contamination-flagged result. The
-**primary evidence for the AI-topology question is the longitudinal within-repo
-design** (Celery, Django): it compares each repo against itself before/after its own
-declared-attribution date, so occasional attributed commits elsewhere in the corpus
-don't confound it.
+**Consequence for the analysis.** The cross-sectional baseline-vs-agentic
+comparison is now reported as secondary evidence. The within-repo longitudinal
+design (Celery, Django) is primary: it compares each repo with its own history
+before its declared-attribution date, so attributed commits elsewhere in the corpus
+do not enter it. With the 10 affected repos excluded (n=5 baseline,
+`data/compare_groups_excl_contaminated.csv`), baseline Gini stays higher than
+agentic Gini (p=0.015) and normalized entropy stays lower (p=0.035). The delta-AIC
+and leaf-fraction differences lose significance at n=5 (p=0.14 and p=0.11). The
+full 15-repo result is in `data/compare_groups_with_contaminated.csv`.
 
-Re-running `compare_groups.py` with the 10 contaminated repos excluded
-(`data/compare_groups_excl_contaminated.csv`, n=5 baseline) shows the same
-direction as the full 15-repo comparison (`data/compare_groups_with_contaminated.csv`)
-on Gini and entropy, but loses significance on delta-AIC and fraction-leaf-files —
-expected at n=5. The conclusion's direction does not move; its significance on two
-of four metrics is not robust to the exclusion, which is itself the result: sample
-size, not contamination, is the binding constraint on those two metrics.
+**Date corrections.** v1.0.0 of the paper gave Celery's date as 2025-05-08. No
+Celery commit on that date carries an attribution marker; the earliest is 5c1a13c,
+2025-05-09. The v1.0.0 script could not reproduce either date: its commit parser
+tested only the first line of each log entry, so it missed `Co-authored-by:`
+trailers in commit bodies and returned the config-file date 2025-08-26. The parser
+now reads whole messages. Both 2025-05-08 and 2025-05-09 fall between the
+2025-05-01 and 2025-06-01 monthly snapshots, so no pre/post label and no computed
+longitudinal result changes. v1.0.0 also cited an aiohttp commit on 2026-05-04; no
+aiohttp commit on that date mentions Claude or Anthropic, and the earliest
+attributed one is 2026-05-16. aiohttp was excluded from the longitudinal study in
+v1.0.0 and remains excluded.
 
-**Parser bug fix.** `find_adoption_date.py`'s commit scanner previously only tested
-each commit's first output line against the attribution regex, so trailers placed
-later in a multi-line commit body (the normal position) were invisible to it. Fixed
-to use NUL-safe field separators (same approach as `audit_contamination.py`).
-Re-running on full history moved Celery's declared-attribution date by one day
-(2025-05-08 → 2025-05-09, the bug had missed an earlier commit); Django is
-unchanged. This doesn't change any monthly snapshot boundary in `walk_history.py`,
-so the longitudinal results in the paper are unaffected — a confirmed non-movement.
-
-**Construct note.** `find_adoption_date.py` detects *declared* AI attribution (a
-literal trailer or marker in the commit message), not tool adoption itself. A
-validation pass comparing this regex against a semantic LLM judge (Jev,
-`typesafe/jev-1.13`) over 1,275 sampled real commits found 0 disagreements (all raw
-data in `data/trials/`) — i.e., in that sample, no commit used AI tooling without
-also declaring it. That result supports using the regex alone (no semantic
-classifier needed) for the declared signal; it is not evidence that undeclared
-("silent") adoption doesn't happen elsewhere in either cohort. Silent adoption is
-out of scope for this project.
+**What the detector measures.** `find_adoption_date.py` finds *declared* AI
+attribution: a literal trailer in a commit message or an AI config file in the
+tree. In a sample of 1,275 commits (1,028 baseline, 247 agentic), the regex and an
+LLM classifier reading the same messages (Jev, `typesafe/jev-1.13`) flagged the same
+116 commits (raw data in `data/trials/`). So the classifier found no attribution
+signal in the messages that the regex missed, and the regex alone is used. Neither
+detector can see AI tool use that leaves no trace in the message; that is out of
+scope for this project.
 
 ---
 
@@ -236,8 +231,8 @@ python scripts/compare_groups.py --summary data/summary.csv \
 **Baseline (15 repos):** Django, Flask, NumPy, pandas, SQLAlchemy, Celery, FastAPI,
 requests, pytest, Scrapy, httpx, Pydantic, aiohttp, Tornado, Click. Selected as
 mainstream human-maintained OSS projects predating the agentic-coding era; 10 of the
-15 contain a minority of individually AI-attributed commits (see "Data validity"
-above) — repo-level "baseline" does not mean commit-level purity.
+15 contain a small number of individually AI-attributed commits (see "Data
+validity" above).
 
 **Agentic (22 repos cloned, 12 fitted):** Python repositories created 2024-2026 with
 explicit AI authorship signals — CLAUDE.md, `.cursor/rules`, README self-attribution,

@@ -7,15 +7,12 @@ signals:
      (e.g. "Co-authored-by: ... noreply@anthropic.com")
   2. AI config files appearing in git history
 
-This measures declared attribution, not actual tool adoption: a contributor
-using an AI coding tool without adding an attribution trailer is invisible to
-this detector. Silent (undeclared) adoption is out of scope for this project.
-A validation pass comparing this regex against a semantic LLM judge (Jev,
-typesafe/jev-1.13) over 1,275 sampled real commits found 0 disagreements
-(see data/trials/pf_hist_result.json) — i.e. no commit in that sample used AI
-tooling without also declaring it in the message. That result is evidence the
-regex is sufficient for the *declared* signal, not evidence that silent
-adoption doesn't happen elsewhere.
+This measures declared attribution. A contributor who uses an AI coding tool
+without adding an attribution trailer is invisible to this detector, and to any
+detector that reads only commit messages; that case is out of scope.
+On 1,275 sampled commits, this regex and an LLM classifier reading the same
+messages (Jev, typesafe/jev-1.13) flagged the same 116 commits
+(data/trials/pf_hist_result.json), so no semantic classifier is used.
 
 Returns ISO date string (of first declared attribution) or None.
 
@@ -80,14 +77,7 @@ _RECORD_SEP = "\x1e"
 
 
 def earliest_commit_signal(repo: Path, verbose: bool = False) -> datetime | None:
-    """Scan full commit messages (subject + body) for AI attribution signals.
-
-    Uses NUL-free field/record separators rather than naive whitespace
-    splitting, since a plain `%ai %s %b` + splitlines() approach only tests
-    each commit's first line against the regex — attribution trailers placed
-    later in a multi-line body (the normal position for `Co-authored-by:`
-    lines) were silently invisible to the old implementation.
-    """
+    # Control-char separators keep multi-line bodies intact; trailers usually sit at the end.
     fmt = f"%ai{_FIELD_SEP}%s{_FIELD_SEP}%b{_RECORD_SEP}"
     log = _git(repo, "log", "--all", f"--format={fmt}")
     earliest = None
