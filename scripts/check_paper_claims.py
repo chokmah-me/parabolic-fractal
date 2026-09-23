@@ -453,6 +453,10 @@ zd = re.sub(r"\s+", " ", ZENODO["description"])
 check(".zenodo.json repeats numbers", True, True, ["421 of 221,145", "p=0.027", "p=0.195", "corrects eight errors", "a tenth, Django, has an AI configuration file"], where=zd)
 check("DOIs", True, True, ["paper doi: 10.5281/zenodo.20313669", "code and data doi: 10.5281/zenodo.20318458",
                            "all versions: doi: 10.5281/zenodo.20318457", "Paper, all versions: doi: 10.5281/zenodo.20313668"])
+nc = {r["repo"]: r for r in read(ROOT / "data" / "repos" / "provenance.csv")}["NewsCrawler"]
+check("3.1 NewsCrawler: human commits before first AI signal", (nc["first_commit_date"], nc["adoption_date_at_snapshot"]),
+      ("2024-11-07", "2025-10-15"), ["NewsCrawler, for example, has its first commit on 2024-11-07 and its first AI signal on 2025-10-15",
+                                     "v1.1 describes them that way"])
 check("no unresolved [AUTHOR ...] placeholders", re.findall(r"\[AUTHOR[^\]]*\]", TEXT), [])
 check("figures referenced exist", [f for f in re.findall(r"\]\(\.\./(figures/[^)]+)\)", TEXT) if not (ROOT / f).exists()], [])
 

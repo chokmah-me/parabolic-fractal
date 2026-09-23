@@ -32,6 +32,8 @@ This is version 1.1 of the paper released as v1.0.0 (paper doi: 10.5281/zenodo.2
 
 **C2. Figure captions.** The captions were present in the v1.0.0 source but were not printed in its PDF. v1.1 prints them.
 
+**C3. Cohort B description.** v1.0.0 described Cohort B as applications built by AI agents. The repos were selected by declared AI signals (Section 3.1), and v1.1 describes them that way.
+
 ------
 
 ## Abstract
@@ -94,7 +96,7 @@ Given that (a) Constructal optimization under cognitive pressure produces log-no
 
 **Cohort B (agentic, AI-generated or AI-assisted):** 22 Python repositories created 2024-2026, each meeting at least one of: - CLAUDE.md or `.cursor/rules` present in root - Commit messages containing `Co-authored-by: Cursor cursoragent@cursor.com` or `noreply@anthropic.com` - README explicitly describes AI-assisted or AI-generated development
 
-Repositories were selected to avoid AI *tooling* frameworks (LangChain, AutoGPT) in favor of actual applications *built by* AI agents.
+Repositories were selected to avoid AI *tooling* frameworks (LangChain, AutoGPT) in favor of AI-attributed applications: working software whose development declares AI assistance through the signals above. Selection establishes declared AI attribution, not AI authorship of every file; NewsCrawler, for example, has its first commit on 2024-11-07 and its first AI signal on 2025-10-15.
 
 All repos cloned at HEAD (shallow, depth=1) as of May 2026.
 
@@ -288,7 +290,7 @@ Gini rose after adoption in six of the eight repos and fell in pytest (-0.0003) 
 
 ![Figure 5: Celery structural topology over time. Three panels show Gini, z_lr, and DAIC from January 2023 through May 2026. The dashed vertical line marks the first monthly snapshot on or after the adoption date (snapshot 2025-06-01; adoption date 2025-05-09). No metric shows a directional change at adoption; the change-point in Gini (February 2024) precedes that snapshot by 486 days.](../figures/longitudinal/celery_timeline.png)
 
-*Figure 5: Celery structural topology over time. Three panels show Gini, z_lr, and DAIC from January 2023 through May 2026. The dashed vertical line marks the first monthly snapshot on or after the adoption date (snapshot 2025-06-01; adoption date 2025-05-09). No metric shows a directional change at adoption; the change-point in Gini (February 2024) precedes that snapshot by 486 days.*
+*Figure 5: Celery structural topology over time. Three panels show Gini, $$z_{lr}$$, and DAIC from January 2023 through May 2026. The dashed vertical line marks the first monthly snapshot on or after the adoption date (snapshot 2025-06-01; adoption date 2025-05-09). No metric shows a directional change at adoption; the change-point in Gini (February 2024) precedes that snapshot by 486 days.*
 
 ![Figure 6: Fan-in Gini of the eight pilot repos, as change from the last pre-adoption snapshot, aligned at the adoption boundary (vertical line; the label gives the month of the first post-adoption snapshot). Gray: before adoption; red: after. Every panel has the same y-scale. The large steps before adoption are FastAPI (February 2025), Scrapy (June 2025), and Pydantic (a drop of 0.027 in November 2024 and a rise of 0.037 in December 2025, when the pydantic-core Python sources were added to the repository).](../figures/v1.1/fig6_pilot_gini.png)
 
